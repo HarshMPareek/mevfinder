@@ -14,6 +14,9 @@ maintainers' checks pass. Thank you for helping.
 | write a Learn article | `content/learn/<slug>.md` (see [its README](content/learn/README.md)) | `./arb ui`, then `/learn/<slug>` |
 | change a page of the site | `ui/` (plain JS and CSS, no build step) and `arbkit/site/` | `./arb ui` |
 
+Looking for something to work on? [docs/OPEN_PROBLEMS.md](docs/OPEN_PROBLEMS.md) lists what is in the code but not yet
+trusted (CEX-DEX, inventory arbitrage, JIT results, embedded cycles) and what is missing (cross-chain arbitrage).
+
 ## Rules for classifier changes
 
 - **Fix the rule, not the row.** A wrong label is fixed where the rule is defined, in a way that holds whatever the

@@ -107,6 +107,7 @@ The full map: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 | 🏊 Add a missing pool or token | [tell us](https://github.com/HarshMPareek/mevfinder/issues/new), or edit `chains/<chain>/dex.toml` |
 | ✍️ Write a Learn article | add a Markdown file to [`content/learn/`](content/learn) |
 | 🛠️ Fix a rule or a page | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| 🧠 Take on an open problem (CEX-DEX, cross-chain, ...) | [docs/OPEN_PROBLEMS.md](docs/OPEN_PROBLEMS.md) |
 
 This repository *is* [mevfinder.com](https://mevfinder.com): once merged, a change goes live by itself after the tests and checks pass.
 Questions: [info@mevfinder.com](mailto:info@mevfinder.com)
