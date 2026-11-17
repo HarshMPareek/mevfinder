@@ -47,7 +47,7 @@ operator from the protocol or router the transaction called.
 
 ## 5. LP-token burns called by a pool
 
-**Code:** `_conversions` in `mevlab/trace/movements.py`.
+**Code:** `_conversion_minters` in `mevlab/trace/movements.py`.
 
 Mints that a pool calls on a separate LP token are booked to the pool; burns are still booked to the token contract.
 Doing the same for burns broke a counted Ethereum cycle (block 26315403, `0x1ce9b927…`) and turned five other rows
