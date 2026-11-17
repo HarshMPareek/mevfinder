@@ -1,0 +1,108 @@
+# Arbitrum One (Nitro). Priority gas auctions (PGA) since 2026-09-24; before that FCFS plus the Timeboost express lane (receipt field `timeboosted`).
+[chain]
+name = "arbitrum"
+chain_id = 42161
+family = "arbitrum"
+block_time_ms = 250
+native_symbol = "ETH"
+weth = "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
+
+[ordering]
+# Priority gas auctions since 2026-09-24 (AIP "Transition Arbitrum One ordering policy to PGA"): the sequencer ranks
+# transactions by maxPriorityFeePerGas in 125 ms rounds, ties by arrival, two rounds per 250 ms block. Read like Base's
+# flashblocks: top_of_block = first user tx at the block's max fee; `slot_index_est` estimates the round from fee jumps.
+# Blocks before 2026-09-24 were first-come first-served plus Timeboost; set policy = "fcfs" to read those.
+policy = "fee_sorted"
+flashblocks_per_block = 2
+trigger_window_blocks = 20   # 5 s of chain: same-block triggers first; else the last other-party swap on the route's pools up to 20 blocks earlier
+
+[system]
+tx_types = [100, 106]
+
+[explorer]
+name = "Arbiscan"
+tx = "https://arbiscan.io/tx/"
+address = "https://arbiscan.io/address/"
+block = "https://arbiscan.io/block/"
+blockscout = "https://arbitrum.blockscout.com"     # explorer-pull: API v2 from a same-origin headless tab (Cloudflare challenge to curl)
+blockscout_access = "browser"
+
+[endpoints]
+http = "ARB_HTTP_URL"
+archive = "ARB_ARCHIVE_URL"
+trace = "ARB_TRACE_URL"
+
+[pricing]
+native_symbol = "ETHUSDT"
+
+[tokens]
+WETH    = { address = "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1", decimals = 18, price = "native" }
+USDC    = { address = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831", decimals = 6,  price = "usd" }
+"USDC.e" = { address = "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8", decimals = 6, price = "usd" }
+USDT0   = { address = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9", decimals = 6,  price = "usd" }
+DAI     = { address = "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1", decimals = 18, price = "usd" }
+WBTC    = { address = "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f", decimals = 8,  price = "BTCUSDT" }
+ARB     = { address = "0x912CE59144191C1204E64559FE8253a0e49E6548", decimals = 18, price = "ARBUSDT" }
+
+# Order-flow kickback recipients (Blink Labs): a structural marker of a private-flow backrun; counted as a cost.
+[known_recipients]
+# 2026-10-09 random-block hand review: the Sweeper takes a user's USDT0 by allowance, sells it through TychoRouterV3 and
+# returns USDC, splitting 0.37 USDT0 of the user's balance between fee wallets; the fee had read as a cycle (513085162 #1).
+"0xf9e6d0d6f3a4ce89384a1387a32ac124e5c3cf84" = { name = "Sweeper (sweeps a user's tokens into USDC through the Tycho router, fee split to 0x382d259c)", kind = "settlement" }
+# 2026-10-09 random-block hand review: the vanity-address Adapter executes users' gasless orders (permit + transferFrom,
+# a relayer EOA sends the transaction, the executor 0x16f19efd routes and keeps a fee); the fee residue had closed as
+# cycles on Arbitrum (513092576 #2, 513218684 #3) and Ethereum. An order execution is a settlement, never a cycle.
+"0x0000000000bbf5c5fd284e657f01bd000933c96d" = { name = "gasless-swap Adapter (relayer executes a user's permit order through GenericSwapExecutor 0x16f19efd, fee kept)", kind = "settlement" }
+"0x9008d19f58aabd9ed0d60971565aa8510560ab41" = { name = "CoW Protocol GPv2Settlement", kind = "settlement" }
+"0x743be0db30148336a3db479f19d4e1828b293869" = { name = "Blink order-flow kickback", kind = "kickback" }
+# Timeboost era (2025-04-17 to 2026-09-24): searchers using Gattaca's Kairos express-lane resale paid it by an explicit ETH
+# transfer inside the time-boosted transaction (arXiv 2603.20175: 39,521 payments, ~$8,001, Feb 1 - Mar 12 2026). Arbitrum One
+# runs priority gas auctions since 2026-09-24 (the sample here is Oct 7-9: no `timeboosted` receipt, no Kairos payment); the
+# declaration keeps any pre-PGA block reading such a payment as a tip, never as a collector.
+"0x60e6a31591392f926e627ed871e670c3e81f1ab8" = { name = "Kairos (Gattaca) Timeboost express-lane payment contract", kind = "builder" }
+# 2026-10-09 random-block hand review (seed 20261011): order-execution contracts whose keepers' or solvers' surplus had
+# been counted as cycles. GMX V2 keepers release a user's order funds from the MultichainVault into the OrderVault and
+# sell the fee portion for gas (3 rows); a Glide deposit (a per-user GlideDeposit contract behind the factory 0x442be06b,
+# the solver's callee on every chain) is filled by a solver who takes the user's USDT0 and pays USDC that Glide burns
+# through Circle's TokenMinterV2 (1 row); the Keeper vault batches users' USDT0/USDC orders
+# through helper contracts (2 rows, the pool's community fee read as the gain). A transaction that calls one of them is
+# a settlement, never a cycle (contract names from arbitrum.blockscout.com).
+"0x31ef83a530fde1b38ee9a18093a333d8bbbc40d5" = { name = "GMX V2 OrderVault", kind = "settlement" }
+"0xceaadfaf6a8c489b250e407987877c5fdfcdbe6e" = { name = "GMX V2 MultichainVault", kind = "settlement" }
+"0x442be06bb5d13711a22ccd3fa382b72a874c5135" = { name = "GlideDepositFactory (per-user GlideDeposit orders filled by solvers)", kind = "settlement" }
+"0xc6dd6c021cfbb284f0c0d788547b51fc90fcf663" = { name = "Keeper order-batch vault", kind = "settlement" }
+
+# RFQ settlement contracts (declared quote venues): a maker's inventory moved by allowance inside their frame is a quote leg.
+# Bebop's settlement is deployed at this address on every chain (2026-10-09 late: Base 52340002 #58)
+[quote_venues]
+"0xbbbbbbb520d69a9775e85b458c58c648259fad5f" = { name = "Bebop settlement", event = "0xadd7095b" }
+
+# Live follower settings.
+# log_range: newest blocks searched for an unknown singleton pool; seed_chunk: eth_getLogs span for the pool seed;
+# confirmations: blocks behind the head before a block is classified; trace_window: blocks back the node still traces.
+[live]
+log_range = 1000000
+seed_chunk = 1000000
+confirmations = 1
+trace_window = 100
+
+# Native RFQ (docs.native.org): quotes taken from its market makers count as venue legs (RFQ takes count).
+[declared_venues]
+"0xba1cf8a63227b46575af823beb4d83d1025eff09" = { name = "Native CreditVault (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x230840ee2ea20e17a96dff9debf1e9ee8deec3df" = { name = "Native NativeRFQPool V6 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x9ef4a86b0f299b28510fd37e6f1361ec0f769a65" = { name = "Native NativeRFQPool V4 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x3972b8c106dcdef2c263ff98d18bf4fc62abe730" = { name = "Native NativeRFQPool V3 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+
+# Who receives each fee component (measured 2026-11-01 on blocks 520147741-2 from our node, to the wei): the priority
+# fee goes to the network fee account 0x32e7af5a… (ArbOwnerPublic.getNetworkFeeAccount), the base fee mostly to the
+# infra fee account 0xbf5041fc…; the block coinbase 0xa4b0…"sequencer" receives nothing. PGA since 2026-09-24
+# (AIP "Transition Arbitrum One ordering policy to PGA"; docs.arbitrum.io: 97 % DAO treasury, 3 % Developer Guild).
+# No block producer keeps a fee on Arbitrum One.
+[fee_flow]
+producer_label = "Priority fees to the DAO"
+producer_hint = "PGA bids: 97 % to the Arbitrum DAO treasury, 3 % to the Developer Guild"
+priority_step = "Priority fee (to the Arbitrum DAO)"
+tip_step = "Direct payment to the sequencer"
+network_label = "Network fees"
+network_hint = "gas at the base fee (L1 share included), to the chain's fee accounts"
+chain_fee_step = "Gas at the base fee (to the chain)"

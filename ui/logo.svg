@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="MEV Finder">
+  <title>MEV Finder</title>
+  <defs>
+    <linearGradient id="mf-tile" x1="6" y1="2" x2="58" y2="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset=".48" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#4338ca"/>
+    </linearGradient>
+    <radialGradient id="mf-glow" cx="22" cy="14" r="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- tile -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#mf-tile)"/>
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#mf-glow)"/>
+  <!-- magnifier -->
+  <circle cx="27.5" cy="27.5" r="14.2" fill="#0b1f4d" fill-opacity=".28" stroke="#ffffff" stroke-width="4.4"/>
+  <path d="M38.1 38.1 L48.6 48.6" stroke="#ffffff" stroke-width="6.4" stroke-linecap="round"/>
+  <!-- an arbitrage loop across three pools, found inside the lens; the gold node is the profit -->
+  <path d="M27.5 20.2 L20.6 31.8 L34.4 31.8 Z" fill="none" stroke="#bae6fd" stroke-width="2.1" stroke-linejoin="round"/>
+  <circle cx="20.6" cy="31.8" r="2.7" fill="#ffffff"/>
+  <circle cx="34.4" cy="31.8" r="2.7" fill="#ffffff"/>
+  <circle cx="27.5" cy="20.2" r="3.3" fill="#facc15" stroke="#fef9c3" stroke-width="1"/>
+</svg>

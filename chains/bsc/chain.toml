@@ -1,0 +1,122 @@
+# BNB Smart Chain. Validator/builder blocks (48 Club, bloXroute, BlockRazor); baseFeePerGas is 0, so the
+# whole gas price is the validator's; searchers additionally pay the builder by native transfer inside the tx.
+# Addresses below are the deterministic / canonical deployments; `./arb -c bsc verify-registry` checks them on chain.
+[chain]
+name = "bsc"
+chain_id = 56
+family = "bsc"               # ethereum-style fees without an L1 component; base fee 0
+block_time_ms = 450             # measured 2026-10-08 over 60 blocks: mean 0.44 s (3 blocks per timestamp second)
+native_symbol = "BNB"
+weth = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"   # WBNB plays the wrapped-native role
+
+[ordering]
+policy = "builder"
+flashblocks_per_block = 0
+# Cross-block triggers (2026-11-08): with 0.45 s blocks a backrun often lands 1-3 blocks after the swap it follows
+# (48 h of BSC: $756/day of counted cycles 1-3 blocks after a user swap on their route, 90 % of it paid to builders,
+# none linked before). Same rule as Base / Optimism / Arbitrum: the last other-party touch of the route's pools.
+trigger_window_blocks = 3
+# Same-block search passes the operator's own earlier transactions and competing cycles that took the same move first,
+# and counts a pool's creation as touching it (positions.link_original_triggers / created_pools).
+link_original_trigger = true
+
+[system]
+tx_types = []
+
+[explorer]
+name = "BscScan"
+tx = "https://bscscan.com/tx/"
+address = "https://bscscan.com/address/"
+block = "https://bscscan.com/block/"
+nodereal = "https://bsc-explorer-api.nodereal.io/api"   # explorer-pull: the API behind bsctrace.com (NodeReal): tx/getDetail, tx/getInternalTxList; raw values, no page cap
+page = "https://bsctrace.com/tx/"
+
+[endpoints]
+http = "BSC_HTTP_URL"
+archive = "BSC_ARCHIVE_URL"
+trace = "BSC_TRACE_URL"
+
+[pricing]
+native_symbol = "BNBUSDT"
+
+[tokens]
+WBNB = { address = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", decimals = 18, price = "native" }
+USDT = { address = "0x55d398326f99059fF775485246999027B3197955", decimals = 18, price = "usd" }
+USDC = { address = "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d", decimals = 18, price = "usd" }
+BUSD = { address = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", decimals = 18, price = "usd" }
+USD1 = { address = "0x8d0D000Ee44948FC98c9B98A4FA4921476f08B0d", decimals = 18, price = "usd" }
+ETH  = { address = "0x2170Ed0880ac9A755fd29B2688956BD959F933F8", decimals = 18, price = "ETHUSDT" }
+BTCB = { address = "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c", decimals = 18, price = "BTCUSDT" }
+CAKE = { address = "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", decimals = 18, price = "CAKEUSDT" }
+
+# Addresses that receive native BNB from arbitrage transactions across several operators [chain, 60-block scan
+# 2026-10-08: 0x4848… paid by 4 operators in 13 cycles, 0x1266… by 3 operators in 8]. Payments to `builder`
+# recipients are counted as builder tips (a cost); `kickback` recipients are order-flow kickbacks (a cost).
+[known_recipients]
+# 2026-10-09 random-block hand review: a launchpad purchase — the executor spends the user's USDT on PancakeSwap V2 for
+# the exact token amount and returns the change while the distributor delivers the tokens; the purchase price had read as
+# a losing cycle (126602652 #28, 126638856 #62). A purchase execution is a settlement.
+"0x3cb658cc8f58dcc2adffed1e8f074a4a659b0222" = { name = "launchpad purchase executor (buys the exact token amount at the PancakeSwap price through 0x42971552, the tokens are delivered from the 0x2796a26e distributor)", kind = "settlement" }
+# 2026-10-09 random-block hand review: the vanity-address Adapter executes users' gasless orders (permit + transferFrom,
+# a relayer EOA sends the transaction, the executor 0x16f19efd routes and keeps a fee); the fee residue had closed as
+# cycles on Arbitrum (513092576 #2, 513218684 #3) and Ethereum. An order execution is a settlement, never a cycle.
+"0x0000000000bbf5c5fd284e657f01bd000933c96d" = { name = "gasless-swap Adapter (relayer executes a user's permit order through GenericSwapExecutor 0x16f19efd, fee kept)", kind = "settlement" }
+"0x9008d19f58aabd9ed0d60971565aa8510560ab41" = { name = "CoW Protocol GPv2Settlement", kind = "settlement" }
+"0x4848489f0b2bedd788c696e2d79b6b69d7484848" = { name = "48 Club builder", kind = "builder" }
+"0x1266c6be60392a8ff346e8d5eccd3e69dd9c5f20" = { name = "BlockRazor builder (BscScan: BlockRazor: Payment; was misnamed bloXroute until 2026-10-31)", kind = "builder" }
+"0xc7d4187cbda07f4b5be04418b9723b5faf65db5c" = { name = "BlockRazor payment wallet (funded by BlockRazor: Payment, 6.09M transactions sent; paid by 6 bots, BscScan 2026-10-31)", kind = "builder" }
+"0x743be0db30148336a3db479f19d4e1828b293869" = { name = "Blink order-flow kickback", kind = "kickback" }
+# 2026-10-09 random-block hand review (seeds 20261011/20261012): four more EOAs (no code) paid native BNB out of cycle
+# proceeds by several unrelated operators, often 50/50 next to the 48 Club or bloXroute — builder payment addresses by
+# the same empirical criterion as the two above (distinct operators / rows / blocks over 610 scanned blocks:
+# 0xe89c42bc 9 / 27 / 8, 0x956e324d 4 / 39 / 16, 0x83d4d453 4 / 4 / 3, 0x3199a46a 3 / 17 / 3). One of them is paid by
+# the vault 0x60b97709 from inventory after a one-pool buy (126506015 #2), which the operator-side-payer rule now reads.
+"0xe89c42bc188c993273ab34231e12ae60c73042e4" = { name = "builder payment EOA (unnamed, 9 operators)", kind = "builder" }
+"0x956e324dd26941c5626e560a74c71a9d856088f0" = { name = "builder payment EOA (unnamed, 4 operators)", kind = "builder" }
+"0x83d4d453617ae14ffa220911730ad8eb38b05c08" = { name = "builder payment EOA (unnamed, 4 operators)", kind = "builder" }
+"0x3199a46a1ab7821e226fcf9b336684c47faa1062" = { name = "builder payment EOA (unnamed, 3 operators)", kind = "builder" }
+# 2026-10-09 hand review: the meme-token bundlers (`0xcf4ee250…` Transfer*, executor `0xeb91d9ed…`) collect a fee for this
+# address from every bundled user; the fee was read as a cycle's gain, the WBNB mechanics as a losing cycle (11 rows).
+"0x8a08d98cbb218fceb318ecf3abc1ba43d8a7ab0e" = { name = "meme-token bundler fee collector", kind = "bundler_fee" }
+
+# RFQ settlement contracts (declared quote venues), see docs/METHOD.md §2. Declared 2026-10-08 (>= 3 takers, one
+# maker wallet each).
+[quote_venues]
+"0x55555522005bcae1c2424d474bfd5ed477749e3e" = { name = "RFQ settlement (event 0x97ba0cd8)", event = "0x97ba0cd8" }
+"0xca90e422340c8ec0195a94f0a8f1eab448f3bfe3" = { name = "RFQ settlement (event 0xa441699e)", event = "0xa441699e" }
+"0xbbbbbbb520d69a9775e85b458c58c648259fad5f" = { name = "Bebop settlement", event = "0xadd7095b" }
+# 2026-10-09: Bebop's second settlement contract moves the tokens (makers fill inside its frame, it keeps a fee);
+# undeclared it was absorbed into the operator group and its 4.53 USDT fee became the "result" (Ethereum 26154677 #2)
+"0xbeb0009aca35087ce7ccf11637e24dd1aad3bf2a" = { name = "Bebop settlement (JAM)", event = "0x58073e86" }
+
+# PancakeSwap Infinity keeps pool tokens in a separate Vault (0x238a3588…): the trace sees the Vault as the counterparty while
+# the Swap events come from the CL pool manager. Declared as the manager's member so the trace reads the same venue the
+# events do (2026-10-31: 81 of 93 "trace-only venue" flags on BSC hand labels were this Vault).
+[declared_venues]
+"0xba8db0caf781cac69b6acf6c848ac148264cc05d" = { name = "Native CreditVault (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x8ac1009d5f13660ce7089901e51459142ad50793" = { name = "Native NativeRFQPool V6 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x9197a811b152298eae17166b2d33b8a80ba6b980" = { name = "Native NativeRFQPool V4 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x9af2f3c0cd35283e13f7087e2b34b1444b57a44c" = { name = "Native NativeRFQPool V3 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0xa0ffb9c1ce1fe56963b0321b32e7a0302114058b" = { name = "PancakeSwap Infinity CL pool manager", members = ["0x238a358808379702088667322f80ac48bad5e6c4"] }
+
+# Live follower settings.
+# log_range: newest blocks searched for an unknown singleton pool; seed_chunk: eth_getLogs span for the pool seed;
+# confirmations: blocks behind the head before a block is classified; trace_window: blocks back the node still traces.
+[live]
+log_range = 5000
+seed_chunk = 5000
+confirmations = 2
+trace_window = 100
+
+# Who receives each fee component (measured 2026-11-01 on blocks 130962167-8 from our node): base fee is 0, so the
+# whole gas fee is the validator's; the block's system deposit splits it 10 % burn (0x…dead, BEP-95), ~6.25 %
+# SystemReward (0x…1002), the rest ValidatorSet (0x…1000), to the wei. Builders (48 Club, BlockRazor, …) are paid by
+# separate native transfers ([known_recipients] kind builder).
+[fee_flow]
+producer_label = "Paid to validators and builders"
+producer_hint = "gas to the validator (10 % of it burned) and tips to builders"
+priority_step = "Gas to the validator"
+tip_step = "Tip to the builder"
+network_label = "Network fees"
+network_hint = "none on BSC: the base fee is 0"
+chain_fee_step = "Base fee"

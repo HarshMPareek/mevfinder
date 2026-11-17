@@ -1,0 +1,89 @@
+# Base mainnet. Copied from the validated Base-only configuration; see chains/base/README.md.
+[chain]
+name = "base"
+chain_id = 8453
+family = "op-stack"          # receipts carry l1Fee/l1GasUsed; priority fee -> SequencerFeeVault, base fee -> BaseFeeVault
+block_time_ms = 2000
+native_symbol = "ETH"
+weth = "0x4200000000000000000000000000000000000006"
+
+[ordering]
+policy = "fee_sorted"        # priority-fee sorted inside ~200 ms flashblocks; top_of_block = first user tx at the block's max fee
+flashblocks_per_block = 10
+trigger_window_blocks = 3    # same-block triggers first; else the last other-party swap on the route's pools up to 3 blocks earlier (next-block arbitrage)
+
+[system]
+tx_types = [126]             # OP Stack deposit / L1-attributes transactions (type 0x7e)
+
+[explorer]
+name = "BaseScan"
+tx = "https://basescan.org/tx/"
+address = "https://basescan.org/address/"
+block = "https://basescan.org/block/"
+blockscout = "https://base.blockscout.com"         # explorer-pull: API v2 from a same-origin headless tab (Cloudflare challenge to curl)
+blockscout_access = "browser"
+
+[endpoints]
+http = "BASE_HTTP_URL"
+archive = "BASE_ARCHIVE_URL"
+trace = "BASE_TRACE_URL"
+
+[pricing]
+native_symbol = "ETHUSDT"    # Binance 1-minute klines for the native coin / wrapped native
+
+[tokens]
+WETH  = { address = "0x4200000000000000000000000000000000000006", decimals = 18, price = "native" }
+USDC  = { address = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", decimals = 6,  price = "usd" }
+USDbC = { address = "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA", decimals = 6,  price = "usd" }
+USDT  = { address = "0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2", decimals = 6,  price = "usd" }
+DAI   = { address = "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb", decimals = 18, price = "usd" }
+cbBTC = { address = "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf", decimals = 8,  price = "BTCUSDT" }
+AERO  = { address = "0x940181a94A35A4569E4529A3CDfB74e38FD98631", decimals = 18, price = "AEROUSDT" }
+
+# Order-flow kickback recipients (Blink Labs): a structural marker of a private-flow backrun; counted as a cost.
+[known_recipients]
+# 2026-10-09 random-block hand review: the vanity-address Adapter executes users' gasless orders (permit + transferFrom,
+# a relayer EOA sends the transaction, the executor 0x16f19efd routes and keeps a fee); the fee residue had closed as
+# cycles on Arbitrum (513092576 #2, 513218684 #3) and Ethereum. An order execution is a settlement, never a cycle.
+"0x0000000000bbf5c5fd284e657f01bd000933c96d" = { name = "gasless-swap Adapter (relayer executes a user's permit order through GenericSwapExecutor 0x16f19efd, fee kept)", kind = "settlement" }
+"0x9008d19f58aabd9ed0d60971565aa8510560ab41" = { name = "CoW Protocol GPv2Settlement", kind = "settlement" }
+"0x743be0db30148336a3db479f19d4e1828b293869" = { name = "Blink order-flow kickback", kind = "kickback" }
+
+# RFQ settlement contracts (declared quote venues), see docs/METHOD.md §2: makers' inventory moved by allowance
+# inside their frame counts as the contract's leg. Declared 2026-10-08 (>= 5 distinct takers, one maker wallet).
+[quote_venues]
+# Bebop's settlement is deployed at this address on every chain (2026-10-09 late: Base 52340002 #58)
+"0xbbbbbbb520d69a9775e85b458c58c648259fad5f" = { name = "Bebop settlement", event = "0xadd7095b" }
+"0x55555522005bcae1c2424d474bfd5ed477749e3e" = { name = "RFQ settlement (event 0x97ba0cd8)", event = "0x97ba0cd8" }
+"0xf0f0f0f0fb0d738452efd03a28e8be14c76d5f73" = { name = "RFQ settlement (event 0xbe65a3f1)", event = "0xbe65a3f1" }
+
+# Live follower settings.
+# log_range: newest blocks searched for an unknown singleton pool; seed_chunk: eth_getLogs span for the pool seed;
+# confirmations: blocks behind the head before a block is classified; trace_window: blocks back the node still traces.
+[live]
+log_range = 5000
+seed_chunk = 10000
+confirmations = 3
+trace_window = 9000
+
+# PancakeSwap Infinity keeps pool tokens in its Vault (0x238a3588…): the trace sees the Vault as the counterparty while the
+# Swap events come from the CL pool manager. Declared as the manager's member (as on BSC; registered on Base 2026-10-31).
+[declared_venues]
+"0x74a4cd023e5afb88369e3f22b02440f2614a1367" = { name = "Native CreditVault (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x72574feefb0197271f63e263cc158d8941f12454" = { name = "Native NativeRFQPool V6 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x571af1490e7fbfcb4231b5bcd7ef6b6b2f35ce5b" = { name = "Native NativeRFQPool V4 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0xb909713394cf63f9771b1f7101590f729c27cec6" = { name = "Native NativeRFQPool V3 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0xa0ffb9c1ce1fe56963b0321b32e7a0302114058b" = { name = "PancakeSwap Infinity CL pool manager", members = ["0x238a358808379702088667322f80ac48bad5e6c4"] }
+
+# Who receives each fee component (measured 2026-11-01 on blocks 53353830-1 from our node, to the wei): priority fee
+# -> SequencerFeeVault 0x4200…0011 (the block's coinbase; Base's sequencer, run by Coinbase), base fee ->
+# BaseFeeVault 0x4200…0019 (not burned), L1 data fee -> L1FeeVault 0x4200…001a, operator fee -> 0x4200…001b (0).
+# Ordering: priority-fee auctions every 200 ms in base-builder flashblocks (docs.base.org transaction ordering).
+[fee_flow]
+producer_label = "Paid to the sequencer"
+producer_hint = "priority fees, to Base's sequencer fee vault"
+priority_step = "Priority fee to the sequencer"
+tip_step = "Direct payment to the sequencer"
+network_label = "Network fees"
+network_hint = "base fee and L1 data fee, to Base's fee vaults"
+chain_fee_step = "Base fee (to the chain)"

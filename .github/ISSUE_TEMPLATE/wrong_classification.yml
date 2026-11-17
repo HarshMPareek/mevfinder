@@ -1,0 +1,23 @@
+name: Wrong classification
+description: A transaction the site labels wrongly (a fake arbitrage, a missed one, a wrong amount)
+labels: [classifier]
+body:
+  - type: input
+    id: link
+    attributes:
+      label: Transaction on mevfinder.com
+      placeholder: https://mevfinder.com/ethereum/tx/0x...
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What the site says, and what it should say
+      description: The label and amount shown, and what you see on the chain explorer instead.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Explorer links, the transfers or calls that show it.

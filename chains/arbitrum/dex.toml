@@ -1,0 +1,102 @@
+# DEX registry for arbitrum. Scope decided by DefiLlama 24h volume share (2026-09-05) + on-chain presence.
+# Every entry starts unverified; `mevlab verify-registry --chain arbitrum` checks bytecode + probe and writes
+# arbitrum_dex.verified.json. status: in_scope | todo (needs addresses/decoder) | unsupported (decoder missing).
+
+[[dex]]
+name = "uniswap_v3"
+kind = "clmm_v3"
+status = "in_scope"
+volume_share_24h = 0.66
+factory = "0x1F98431c8aD98523631AE4a59f267346ea31F984"
+quoter = "0x61fFE014bA17989E743c5F6cB21bF9697530B21e"
+router = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24)"
+probe = { fn = "feeAmountTickSpacing(uint24)", arg = 500, expect = "uint:10" }
+
+[[dex]]
+name = "uniswap_v4"
+kind = "clmm_v4_singleton"
+status = "in_scope"
+volume_share_24h = 0.105
+pool_manager = "0x360e68faccca8ca495c1b759fd9eee466db9fb32"
+position_manager = "0xd88f38f930b7952f2db2432cb002e7abbf3dd869"  # Uniswap V4 PositionManager: poolKeys(bytes25) for pools whose Initialize log is pruned
+state_view = "0x76fd297e2d437cd7f76d50f01afe6160f86e9990"
+quoter = "0x3972c00f7ed4885e145823eb7c655375d275a1c5"
+swap_event = "Swap(bytes32,address,int128,int128,uint160,uint128,int24,uint24)"
+init_event = "Initialize(bytes32,address,address,uint24,int24,address,uint160,int24)"
+
+[[dex]]
+name = "pancakeswap_v3"
+kind = "clmm_v3"
+status = "in_scope"
+volume_share_24h = 0.035
+factory = "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24,uint128,uint128)"
+probe = { fn = "feeAmountTickSpacing(uint24)", arg = 500, expect = "uint:10" }
+
+[[dex]]
+name = "uniswap_v2"
+kind = "cpmm_v2"
+status = "in_scope"
+factory = "0xf1D7CC64Fb4452F05c498126312eBE29f30Fbcf9"
+router = "0x4752ba5dbc23f44d87826276bf6fd6b1c372ad24"
+swap_event = "Swap(address,uint256,uint256,uint256,uint256,address)"
+probe = { fn = "allPairsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "sushiswap_v3"
+kind = "clmm_v3"
+status = "in_scope"
+volume_share_24h = 0.002
+factory = "0x1af415a1EbA07a4986a52B6f2e7dE7003D82231e"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24)"
+probe = { fn = "feeAmountTickSpacing(uint24)", arg = 500, expect = "uint:10" }
+
+[[dex]]
+name = "balancer_v2"
+kind = "vault"
+status = "in_scope"
+vault = "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
+swap_event = "Swap(bytes32,address,address,uint256,uint256)"
+probe = { fn = "WETH()", expect = "address:0x82aF49447D8a07e3bd95BD0d56f35241523fBab1" }
+
+[[dex]]
+name = "camelot_v3"
+kind = "clmm_algebra"
+status = "todo"
+volume_share_24h = 0.038
+notes = "Algebra-based CL; Swap topic identical to Uniswap V3 but pricing/fee math differs (dynamic fee). Factory address to be taken from Camelot docs and verified."
+
+[[dex]]
+name = "fluid_dex"
+kind = "unknown"
+status = "todo"
+volume_share_24h = 0.037
+notes = "Fluid DEX (smart collateral/debt AMM). Events and math unknown; decoder needed before its swaps count."
+
+[[dex]]
+name = "curve"
+kind = "stableswap"
+status = "todo"
+volume_share_24h = 0.009
+notes = "TokenExchange(address,int128,int128,uint256,uint256) / (address,uint256,uint256,uint256,uint256) events; pools via MetaRegistry. Decoder TODO."
+
+[[dex]]
+name = "ekubo"
+kind = "singleton_flash"
+status = "todo"
+core = "0x00000000000014aA86C5d3c41765bb24e11bd701"
+notes = "Ekubo EVM V3 Core, same deterministic address on every chain (docs.ekubo.org). Swap is emitted with log0 (116 bytes, NO topics): cannot be found by topic filter; filter by address=Core and data length. Decoder + PoolKey (token0, token1, config=fee/tickSpacing/extension) TODO. Extensions: Oracle 0x517E…, TWAMM 0xd47f…, MEVCapture 0x5555fF9Ff2757500BF4EE020DcfD0210CFfa41Be."
+
+[[dex]]
+name = "maverick_v2"
+kind = "maverick_v2"
+status = "in_scope"
+swap_event = "PoolSwap(address,address,(uint256,bool,bool,int32),uint256,uint256)"
+
+[[dex]]
+name = "woofi"
+kind = "pmm_woofi"
+status = "in_scope"
+swap_event = "WooSwap(address,address,uint256,uint256,address,address,address,uint256,uint256)"
+notes = "[chain 2026-10-08] WooPP seen as a trace venue; tokens are in the event topics."

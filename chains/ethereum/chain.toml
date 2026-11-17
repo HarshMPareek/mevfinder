@@ -1,0 +1,113 @@
+# Ethereum mainnet. Builder-ordered blocks; bundles pay the builder by coinbase transfer inside the tx
+# (measured from the call trace) or by a separate tip transaction (not attributed here: known gap).
+[chain]
+name = "ethereum"
+chain_id = 1
+family = "ethereum"          # base fee burned; priority fee + coinbase transfers go to the builder/proposer
+block_time_ms = 12000
+native_symbol = "ETH"
+weth = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+
+[ordering]
+policy = "builder"           # the builder orders the block: top_of_block = first user tx whatever it paid
+flashblocks_per_block = 0
+trigger_window_blocks = 0    # public mempool: the trigger is in the same block (bundle) or unobservable
+
+[system]
+tx_types = []
+
+[explorer]
+name = "Etherscan"
+tx = "https://etherscan.io/tx/"
+address = "https://etherscan.io/address/"
+block = "https://etherscan.io/block/"
+blockscout = "https://eth.blockscout.com"          # explorer-pull: API v2, plain HTTPS
+blockscout_access = "direct"
+
+[endpoints]
+http = "ETH_HTTP_URL"
+archive = "ETH_ARCHIVE_URL"
+trace = "ETH_TRACE_URL"
+
+[pricing]
+native_symbol = "ETHUSDT"
+
+[tokens]
+WETH   = { address = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", decimals = 18, price = "native" }
+USDC   = { address = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", decimals = 6,  price = "usd" }
+USDT   = { address = "0xdAC17F958D2ee523a2206206994597C13D831ec7", decimals = 6,  price = "usd" }
+DAI    = { address = "0x6B175474E89094C44Da98b954EedeAC495271d0F", decimals = 18, price = "usd" }
+# dollar stablecoins seen in sandwich / JIT nets (2026-11-01): priced at $1 instead of through a bundle's own legs
+USDS   = { address = "0xdC035D45d973E3EC169d2276DDab16f1e407384F", decimals = 18, price = "usd" }
+PYUSD  = { address = "0x6c3ea9036406852006290770bedfcaba0e23a0e8", decimals = 6,  price = "usd" }
+USDe   = { address = "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3", decimals = 18, price = "usd" }
+WBTC   = { address = "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599", decimals = 8,  price = "BTCUSDT" }
+cbBTC  = { address = "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf", decimals = 8,  price = "BTCUSDT" }
+wstETH = { address = "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0", decimals = 18 }
+# Lido stETH: 1:1 claim on ETH through Lido's withdrawal queue, trades within ~0.1-0.5 % of ETH; valued at the ETH price
+# (no Binance spot pair). It is the collateral of 106 of the first 131 unpriced Aave liquidations (2026-11-01).
+stETH  = { address = "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84", decimals = 18, price = "native" }
+
+# Order-flow kickback recipients (Blink Labs): a structural marker of a private-flow backrun; counted as a cost.
+[known_recipients]
+# 2026-10-09 random-block hand review: the vanity-address Adapter executes users' gasless orders (permit + transferFrom,
+# a relayer EOA sends the transaction, the executor 0x16f19efd routes and keeps a fee); the fee residue had closed as
+# cycles on Arbitrum (513092576 #2, 513218684 #3) and Ethereum. An order execution is a settlement, never a cycle.
+"0x0000000000bbf5c5fd284e657f01bd000933c96d" = { name = "gasless-swap Adapter (relayer executes a user's permit order through GenericSwapExecutor 0x16f19efd, fee kept)", kind = "settlement" }
+# 2026-10-09 random-block hand review: a factory deploys a pre-funded CREATE2 deposit contract and sweeps it — the USDT
+# is swapped to USDC, burned through CCTP (0x28b5a0e9 TokenMessengerV2) for another chain and a fee goes to 0xed2e19fa;
+# the USDT→USDC→(bridge) sweep had closed as a 0.356 USDT "cycle" (26153457 #241). A deposit sweep is a settlement.
+"0x5d1d6fa733bfba0ec7b143de0d7e8a4afa9f9ba9" = { name = "deposit-address sweep factory (CREATE2 deposit contracts swept: swap, CCTP burn, fee to 0xed2e19fa)", kind = "settlement" }
+"0x9008d19f58aabd9ed0d60971565aa8510560ab41" = { name = "CoW Protocol GPv2Settlement", kind = "settlement" }
+# 2026-10-09 random-block hand review (seed 20261011): a Glide deposit fill — the solver calls the GlideDepositFactory,
+# takes the user's 58.75 USDT from the per-user GlideDeposit 0x7e8498d8, swaps it on Uniswap V4 and hands 58.705 USDC
+# to the user's recipient; the whole output had been read as a $58.7 cycle (26150219 #112). Same factory as Arbitrum.
+"0x442be06bb5d13711a22ccd3fa382b72a874c5135" = { name = "GlideDepositFactory (per-user GlideDeposit orders filled by solvers)", kind = "settlement" }
+"0x1111113ccf1426a8e30e2bff5e005d929bf6a90a" = { name = "1inch Fusion settlement (intent fills: few resolvers, many users)", kind = "settlement" }
+"0x743be0db30148336a3db479f19d4e1828b293869" = { name = "Blink order-flow kickback", kind = "kickback" }
+
+# RFQ settlement contracts (declared quote venues): a maker's inventory moved by allowance inside their frame is
+# that contract's leg (docs/METHOD.md §2). Declared 2026-10-08 from the day sample: each settled quotes for >= 9
+# distinct takers against 1-5 maker wallets. Intent / limit-order fills (UniswapX reactors, 1inch OrderFilled,
+# CoW) are excluded by their fill events; the stablecoin redemption module 0x54f5eb3e… (one liquidity wallet,
+# many users, no round trip) is deliberately not declared.
+[quote_venues]
+"0x5979458912f80b96d30d4220af8e2e4925a33320" = { name = "RFQ pool (event 0x1eeaa4ac)", event = "0x1eeaa4ac" }
+"0xb09aaa8933626d7e4c48d65dad2d77021cfbca9a" = { name = "RFQ pool (event 0x1eeaa4ac)", event = "0x1eeaa4ac" }
+"0xbbbbbbb520d69a9775e85b458c58c648259fad5f" = { name = "Bebop settlement", event = "0xadd7095b" }
+# 2026-10-09: Bebop's second settlement contract moves the tokens (makers fill inside its frame, it keeps a fee);
+# undeclared it was absorbed into the operator group and its 4.53 USDT fee became the "result" (Ethereum 26154677 #2)
+"0xbeb0009aca35087ce7ccf11637e24dd1aad3bf2a" = { name = "Bebop settlement (JAM)", event = "0x58073e86" }
+"0x054f0377e07d2f460151f935dffc4d880017e63a" = { name = "RFQ settlement (event 0xa441699e)", event = "0xa441699e" }
+
+# Venues the receipts cannot reveal as such: the Maker LitePSM takes DAI into one contract and pays USDC from another
+# ("pocket"), so neither address both receives and sends and the pair was read as a payout plus unsourced income
+# (2026-10-09 hand review: a +3.78 USDC five-venue cycle counted as a 1,825 USDC loss). Declared venues are infrastructure
+# for the trace verdict: never absorbed into the operator's group.
+[declared_venues]
+"0xe3d41d19564922c9952f692c5dd0563030f5f2ef" = { name = "Native CreditVault (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0xef435b99c2108d0309211d0cc05b70d202c0b5df" = { name = "Native NativeRFQPool V6 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0xc419e67388df0c0cfad15584fc5fc7e67a234c17" = { name = "Native NativeRFQPool V4 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x5d1a34369686ae59ac97ae4e1df5635ffda9ee7c" = { name = "Native NativeRFQPool V3 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x37305b1cd40574e4c5ce33f8e8306be057fd7341" = { name = "Maker LitePSM (DAI/USDC)", members = ["0xf6e72db5454dd049d0788e411b06cfaf16853042"] }
+
+# Live follower settings.
+# log_range: newest blocks searched for an unknown singleton pool; seed_chunk: eth_getLogs span for the pool seed;
+# confirmations: blocks behind the head before a block is classified; trace_window: blocks back the node still traces.
+[live]
+log_range = 5000
+seed_chunk = 10000
+confirmations = 2
+trace_window = 9000
+
+# Who receives each fee component (measured 2026-11-01 on blocks 26316665-6 from our node: the fee recipient's balance
+# rose by priority fees + coinbase transfers; base fee burned; 6 of 10 blocks end with the builder paying the proposer
+# (MEV-Boost; Glamsterdam/ePBS not on mainnet: ethereum.org "Testing on devnets, expected Q4 2026").
+[fee_flow]
+producer_label = "Paid to block builders"
+producer_hint = "priority fees and direct tips to the block's builder, who pays the proposer"
+priority_step = "Priority fee to the builder"
+tip_step = "Tip to the builder"
+network_label = "Base fee (burned)"
+network_hint = "base fee, burned by the protocol"
+chain_fee_step = "Base fee (burned)"

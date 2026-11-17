@@ -1,0 +1,84 @@
+# OP Mainnet. Same OP Stack mechanics as Base; sub-block count per block varies.
+[chain]
+name = "optimism"
+chain_id = 10
+family = "op-stack"
+block_time_ms = 2000
+native_symbol = "ETH"
+weth = "0x4200000000000000000000000000000000000006"
+
+[ordering]
+policy = "fee_sorted"
+flashblocks_per_block = 0    # variable; slot estimates are unvalidated on this chain
+trigger_window_blocks = 3    # same-block triggers first; else the last other-party swap on the route's pools up to 3 blocks earlier (next-block arbitrage)
+
+[system]
+tx_types = [126]
+
+[explorer]
+name = "Etherscan (OP)"
+tx = "https://optimistic.etherscan.io/tx/"
+address = "https://optimistic.etherscan.io/address/"
+block = "https://optimistic.etherscan.io/block/"
+blockscout = "https://optimism.blockscout.com"     # explorer-pull: API v2 (redirects to explorer.optimism.io), plain HTTPS
+blockscout_access = "direct"
+
+[endpoints]
+http = "OP_HTTP_URL"
+archive = "OP_ARCHIVE_URL"
+trace = "OP_TRACE_URL"
+
+[pricing]
+native_symbol = "ETHUSDT"
+
+[tokens]
+WETH    = { address = "0x4200000000000000000000000000000000000006", decimals = 18, price = "native" }
+USDC    = { address = "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85", decimals = 6,  price = "usd" }
+"USDC.e" = { address = "0x7F5c764cBc14f9669B88837ca1490cCa17c31607", decimals = 6, price = "usd" }
+USDT    = { address = "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58", decimals = 6,  price = "usd" }
+USDT0   = { address = "0x01bFF41798a0BcF287b996046Ca68b395DbC1071", decimals = 6,  price = "usd" }
+DAI     = { address = "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1", decimals = 18, price = "usd" }
+WBTC    = { address = "0x68f180fcCe6836688e9084f035309E29Bf0A2095", decimals = 8,  price = "BTCUSDT" }
+OP      = { address = "0x4200000000000000000000000000000000000042", decimals = 18, price = "OPUSDT" }
+VELO    = { address = "0x9560e827aF36c94D2Ac33a39bCE1Fe78631088Db", decimals = 18, price = "VELOUSDT" }
+wstETH  = { address = "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb", decimals = 18 }
+
+# Order-flow kickback recipients (Blink Labs): a structural marker of a private-flow backrun; counted as a cost.
+[known_recipients]
+# 2026-10-09 random-block hand review: the vanity-address Adapter executes users' gasless orders (permit + transferFrom,
+# a relayer EOA sends the transaction, the executor 0x16f19efd routes and keeps a fee); the fee residue had closed as
+# cycles on Arbitrum (513092576 #2, 513218684 #3) and Ethereum. An order execution is a settlement, never a cycle.
+"0x0000000000bbf5c5fd284e657f01bd000933c96d" = { name = "gasless-swap Adapter (relayer executes a user's permit order through GenericSwapExecutor 0x16f19efd, fee kept)", kind = "settlement" }
+"0x9008d19f58aabd9ed0d60971565aa8510560ab41" = { name = "CoW Protocol GPv2Settlement", kind = "settlement" }
+"0x743be0db30148336a3db479f19d4e1828b293869" = { name = "Blink order-flow kickback", kind = "kickback" }
+
+# RFQ settlement contracts (declared quote venues): a maker's inventory moved by allowance inside their frame is a quote leg.
+# Bebop's settlement is deployed at this address on every chain (2026-10-09 late: Base 52340002 #58)
+[quote_venues]
+"0xbbbbbbb520d69a9775e85b458c58c648259fad5f" = { name = "Bebop settlement", event = "0xadd7095b" }
+
+# Live follower settings.
+# log_range: newest blocks searched for an unknown singleton pool; seed_chunk: eth_getLogs span for the pool seed;
+# confirmations: blocks behind the head before a block is classified; trace_window: blocks back the node still traces.
+[live]
+log_range = 50000
+seed_chunk = 100000
+confirmations = 3
+trace_window = 9000
+
+# SushiSwap BentoBoxV1 (OP Mainnet Etherscan label "SushiSwap: BentoBoxV1"): the token vault of Sushi's Trident pools; the
+# trace sees it as the counterparty of Trident swaps. Six hand-labelled cycles route through it (registered 2026-10-31).
+[declared_venues]
+"0xc35dadb65012ec5796536bd9864ed8773abc74c4" = { name = "SushiSwap BentoBoxV1 (Trident pools' vault)" }
+
+# Who receives each fee component (measured 2026-11-01 on blocks 158949115-6 from our node, to the wei): priority fee
+# -> SequencerFeeVault 0x4200…0011, base fee (≈ 415 wei/gas) -> BaseFeeVault, L1 data fee -> L1FeeVault. Ordering:
+# priority fee (docs.optimism.io; the May 2026 stake-based ordering experiment ended, back to standard PGA).
+[fee_flow]
+producer_label = "Paid to the sequencer"
+producer_hint = "priority fees, to OP Mainnet's sequencer fee vault"
+priority_step = "Priority fee to the sequencer"
+tip_step = "Direct payment to the sequencer"
+network_label = "Network fees"
+network_hint = "base fee and L1 data fee, to OP Mainnet's fee vaults"
+chain_fee_step = "Base fee (to the chain)"

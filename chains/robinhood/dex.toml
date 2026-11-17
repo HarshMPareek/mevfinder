@@ -1,0 +1,67 @@
+# DEX registry for robinhood. Scope decided by DefiLlama 24h volume share (2026-09-05) + on-chain presence.
+# Every entry starts unverified; `mevlab verify-registry --chain robinhood` checks bytecode + probe and writes
+# robinhood_dex.verified.json. status: in_scope | todo (needs addresses/decoder) | unsupported (decoder missing).
+
+[[dex]]
+name = "uniswap_v4"
+kind = "clmm_v4_singleton"
+status = "in_scope"
+volume_share_24h = 0.62
+pool_manager = "0x8366a39cc670b4001a1121b8f6a443a643e40951"
+position_manager = "0x58daec3116aae6d93017baaea7749052e8a04fa7"  # Uniswap V4 PositionManager: poolKeys(bytes25) for pools whose Initialize log is pruned
+state_view = "0xf3334192d15450cdd385c8b70e03f9a6bd9e673b"
+quoter = "0x8dc178efb8111bb0973dd9d722ebeff267c98f94"
+swap_event = "Swap(bytes32,address,int128,int128,uint160,uint128,int24,uint24)"
+init_event = "Initialize(bytes32,address,address,uint24,int24,address,uint160,int24)"
+notes = "On-chain 2026-09-05: 3,319 Swap events in 300 blocks (31 s) across 390 pools ≈ 9.2M swaps/day. DefiLlama: $1.38B/day."
+
+[[dex]]
+name = "uniswap_v2"
+kind = "cpmm_v2"
+status = "in_scope"
+volume_share_24h = 0.007
+factory = "0x8bceaa40b9acdfaedf85adf4ff01f5ad6517937f"
+router = "0x89e5db8b5aa49aa85ac63f691524311aeb649eba"
+swap_event = "Swap(address,uint256,uint256,uint256,uint256,address)"
+probe = { fn = "allPairsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "pancakeswap_v3"
+kind = "clmm_v3"
+status = "in_scope"
+factory = "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24,uint128,uint128)"
+probe = { fn = "feeAmountTickSpacing(uint24)", arg = 500, expect = "uint:10" }
+notes = "DefiLlama lists PancakeSwap V3 on Robinhood Chain; same deterministic factory address assumed, verify."
+
+[[dex]]
+name = "v3_style_unknown"
+kind = "clmm_v3"
+status = "todo"
+notes = "On-chain 2026-09-05: 1,511 Uniswap-V3-topic Swap events in 300 blocks across 301 pools (≈4.2M/day) from factories not yet identified (candidates: Ramses CL V2, 'up v3', GIGA V3, PancakeSwap V3). Resolve pool->factory and add entries."
+
+[[dex]]
+name = "ekubo"
+kind = "singleton_flash"
+status = "todo"
+core = "0x00000000000014aA86C5d3c41765bb24e11bd701"
+notes = "Ekubo EVM V3 Core, same deterministic address on every chain (docs.ekubo.org). Swap is emitted with log0 (116 bytes, NO topics): cannot be found by topic filter; filter by address=Core and data length. Decoder + PoolKey (token0, token1, config=fee/tickSpacing/extension) TODO. Extensions: Oracle 0x517E…, TWAMM 0xd47f…, MEVCapture 0x5555fF9Ff2757500BF4EE020DcfD0210CFfa41Be."
+
+[[dex]]
+name = "algebra_fork46"
+kind = "clmm_algebra"
+status = "todo"
+# volume_share_24h is unknown (model None); TOML has no null. Do not substitute 0.
+factory = "0x16494a80e08bcb9285d87b67149d7b01774d82f8"
+router = "0x8971d5a8f950f021e97583855925b021bfae2b35"
+notes = "[chain] node_diagnosis_20260921/router_metadata at block 63373492: router and pool agree on factory; router.poolDeployer()=0x2fadf533d9a098310007978730554f842547fc5f, matching existing Settler fork 46. ExactInputSingle calldata observation added; routes remain uncertain. Fee is state dependent, not the zero path marker. Own executor lacks algebraSwapCallback; execution/pricing and market share remain unverified."
+
+[[dex]]
+name = "pancakeswap_infinity_cl"
+kind = "clmm_v4_singleton"
+status = "in_scope"
+pool_manager = "0xd01c774d4a66408326bc65728ac5ae5aaf004032"
+vault = "0xfe7e25de55e5cbbecccb661f3679f873f72b9b0d"
+swap_event = "Swap(bytes32,address,int128,int128,uint160,uint128,int24,uint24,uint16)"
+init_event = "Initialize(bytes32,address,address,address,uint24,bytes32,uint160,int24)"
+notes = "PancakeSwap Infinity CL on Robinhood (found by the 2026-10-31 manual review): the Vault 0xfe7e25de has exactly the BSC Infinity Vault's runtime code, the manager 0xd01c774d has the CL manager's size (20,885 bytes; the hash differs by its embedded Vault address) and emits the Infinity CL Swap topic 0x04206ad2."

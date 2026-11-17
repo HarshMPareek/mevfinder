@@ -1,0 +1,96 @@
+# Robinhood Chain (Arbitrum Orbit / Nitro). FCFS sequencer, 100 ms blocks, no priority fee honoured:
+# reactive backruns land in the same block or 1-3 blocks later, so triggers are searched across blocks.
+[chain]
+name = "robinhood"
+chain_id = 4663
+family = "arbitrum"          # receipts carry gasUsedForL1 / l1BlockNumber; L1 cost folded into gasUsed
+block_time_ms = 100
+native_symbol = "ETH"
+weth = "0x0bd7d308f8e1639fab988df18a8011f41eacad73"
+
+[ordering]
+policy = "fcfs"
+flashblocks_per_block = 0
+trigger_window_blocks = 50   # 5 s of chain; beyond that a "trigger" is just the last trade (exp08 anatomy)
+
+[system]
+tx_types = [100, 106]        # ArbitrumDepositTx (0x64), ArbitrumInternalTx (0x6a, one per block)
+
+[explorer]
+name = "Etherscan (Robinhood)"
+tx = "https://robin.etherscan.io/tx/"
+address = "https://robin.etherscan.io/address/"
+block = "https://robin.etherscan.io/block/"
+blockscout = "https://robinhoodchain.blockscout.com"   # explorer-pull: API v2 from a same-origin headless tab (Cloudflare challenge to curl since 2026-10-09)
+alt_tx = "https://robinhoodchain.blockscout.com/tx/"
+# robinscan.io (the earlier entry) does not resolve (NXDOMAIN, checked 2026-10-31); robin.etherscan.io is Etherscan's Robinhood Chain explorer.
+
+[endpoints]
+http = "RH_HTTP_URL"
+archive = "RH_ARCHIVE_URL"
+trace = "RH_TRACE_URL"
+
+[pricing]
+native_symbol = "ETHUSDT"
+
+[tokens]
+WETH = { address = "0x0bd7d308f8e1639fab988df18a8011f41eacad73", decimals = 18, price = "native" }
+USDG = { address = "0x5fc5360d0400a0fd4f2af552add042d716f1d168", decimals = 6,  price = "usd" }
+
+# Order-flow kickback recipients (Blink Labs): a structural marker of a private-flow backrun; counted as a cost.
+[known_recipients]
+# 2026-10-09 random-block hand review: the vanity-address Adapter executes users' gasless orders (permit + transferFrom,
+# a relayer EOA sends the transaction, the executor 0x16f19efd routes and keeps a fee); the fee residue had closed as
+# cycles on Arbitrum (513092576 #2, 513218684 #3) and Ethereum. An order execution is a settlement, never a cycle.
+"0x0000000000bbf5c5fd284e657f01bd000933c96d" = { name = "gasless-swap Adapter (relayer executes a user's permit order through GenericSwapExecutor 0x16f19efd, fee kept)", kind = "settlement" }
+"0x9008d19f58aabd9ed0d60971565aa8510560ab41" = { name = "CoW Protocol GPv2Settlement", kind = "settlement" }
+"0x743be0db30148336a3db479f19d4e1828b293869" = { name = "Blink order-flow kickback", kind = "kickback" }
+
+# RFQ settlement contracts (declared quote venues). A market maker's inventory moved by allowance inside one of
+# these contracts' frames is read as that contract's leg, so a pool-versus-quote take counts as a cycle
+# (docs/METHOD.md §2). Identified 2026-10-08 structurally: each contract settled quotes for >= 3 distinct takers
+# against one maker wallet (Robinhood 0x2f4579ca…, 0x907d1d17…); intent fills (UniswapX, 1inch, CoW) are
+# excluded by their fill events instead. Undeclared settlements keep their makers as `uncalled_counterparties`.
+[quote_venues]
+# Bebop's settlement is deployed at this address on every chain (2026-10-09 late: Base 52340002 #58)
+"0xbbbbbbb520d69a9775e85b458c58c648259fad5f" = { name = "Bebop settlement", event = "0xadd7095b" }
+"0x000c9f312abc95b680fcbf23767a2e64ba438771" = { name = "RFQ pool (event 0x1eeaa4ac)", event = "0x1eeaa4ac" }
+"0x5744e9c5165973ba5a332135477f3000c143f16f" = { name = "RFQ pool (event 0x1eeaa4ac)", event = "0x1eeaa4ac" }
+"0x0217ee258081bb431f9fa25e0943628ce9d0595a" = { name = "RFQ pool (event 0x1eeaa4ac)", event = "0x1eeaa4ac" }
+"0xcd3d6b36f79ef74785bd1da226c9827b5a5c2dd8" = { name = "RFQ pool (event 0x1eeaa4ac)", event = "0x1eeaa4ac" }
+"0x894b9322662f4e4ce05882f38095c6c7bcf1cc73" = { name = "RFQ pool (event 0x1eeaa4ac)", event = "0x1eeaa4ac" }
+"0x9a2bbf828d619cb82b891ecf2b6880ff971f20b6" = { name = "RFQ pool (event 0x1eeaa4ac)", event = "0x1eeaa4ac" }
+"0x6af2cee71babfa22f9f55a16507cc4dc6369304b" = { name = "RFQ pool (event 0x1eeaa4ac)", event = "0x1eeaa4ac" }
+"0x55555522005bcae1c2424d474bfd5ed477749e3e" = { name = "RFQ settlement (event 0x97ba0cd8)", event = "0x97ba0cd8" }
+"0x0a3da72e01122d789e6652c56bf21dc61bcfc364" = { name = "RFQ settlement (event 0xa441699e)", event = "0xa441699e" }
+"0xf0f0f0f0fb0d738452efd03a28e8be14c76d5f73" = { name = "RFQ settlement (event 0xbe65a3f1)", event = "0xbe65a3f1" }
+
+# Live follower settings.
+# log_range: newest blocks searched for an unknown singleton pool; seed_chunk: eth_getLogs span for the pool seed;
+# confirmations: blocks behind the head before a block is classified; trace_window: blocks back the node still traces.
+[live]
+log_range = 1000000
+seed_chunk = 1000000
+confirmations = 1
+trace_window = 100
+
+# PancakeSwap Infinity CL keeps pool tokens in its Vault (0xfe7e25de…); declared as the manager's member (as on BSC, Base).
+[declared_venues]
+"0x57b8f68ef57af2db70bc9aac891836661ca4cb51" = { name = "Native CreditVault (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x45f4d4aed68a04e9a48eed69e1c8b15d7875d25f" = { name = "Native NativeRFQPool V6 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x8428e1ee461cf1ca5fc5873e47a56a656e7b717d" = { name = "Native NativeRFQPool V4 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0x55b503d1a03fc73a875765827ffc28cc15e15f06" = { name = "Native NativeRFQPool V3 (RFQ market maker; docs.native.org addresses, 2026-10-31)" }
+"0xd01c774d4a66408326bc65728ac5ae5aaf004032" = { name = "PancakeSwap Infinity CL pool manager", members = ["0xfe7e25de55e5cbbecccb661f3679f873f72b9b0d"] }
+
+# Who receives each fee component (measured 2026-11-01 on blocks 103008996-7 from our node, to the wei): no priority
+# fee is collected (effective gas price = base fee on every transaction); gas goes to the infra fee account
+# 0x5a2b80a9… and the network fee account 0xbc5c3a7a…. Ordering: first-come, first-served at the sequencer
+# (docs.robinhood.com "Differences from Ethereum"; PGA only under evaluation per CoinDesk 2026-10-09).
+[fee_flow]
+producer_label = "Priority fees"
+producer_hint = "none collected: first-come, first-served ordering"
+priority_step = "Priority fee"
+tip_step = "Direct payment to the sequencer"
+network_label = "Network fees"
+network_hint = "gas at the base fee (L1 share included), to the chain's fee accounts"
+chain_fee_step = "Gas at the base fee (to the chain)"

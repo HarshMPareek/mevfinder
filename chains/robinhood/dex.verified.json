@@ -1,0 +1,62 @@
+{
+  "chain": "robinhood",
+  "chain_id": 4663,
+  "checked_at": "2026-10-08T19:46:28.868483+00:00",
+  "entries": [
+    {
+      "name": "uniswap_v4",
+      "kind": "clmm_v4_singleton",
+      "status": "in_scope",
+      "swap_topic": "0x40e9cecb9f5f1f1c5b9c97dec2917b7ee92e57ba5563708daca94dd84ad7112f",
+      "decoder": true,
+      "address": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+      "has_code": true,
+      "check": "ok"
+    },
+    {
+      "name": "uniswap_v2",
+      "kind": "cpmm_v2",
+      "status": "in_scope",
+      "swap_topic": "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822",
+      "decoder": true,
+      "address": "0x8bceaa40b9acdfaedf85adf4ff01f5ad6517937f",
+      "has_code": true,
+      "probe_ok": true,
+      "check": "ok"
+    },
+    {
+      "name": "pancakeswap_v3",
+      "kind": "clmm_v3",
+      "status": "in_scope",
+      "swap_topic": "0x19b47279256b2a23a1665c810c8d55a1758940ee09377d4f8d26497a3577dc83",
+      "decoder": true,
+      "address": "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865",
+      "has_code": true,
+      "probe_ok": true,
+      "check": "ok"
+    },
+    {
+      "name": "v3_style_unknown",
+      "kind": "clmm_v3",
+      "status": "todo",
+      "check": "no_address"
+    },
+    {
+      "name": "ekubo",
+      "kind": "singleton_flash",
+      "status": "todo",
+      "address": "0x00000000000014aA86C5d3c41765bb24e11bd701",
+      "has_code": true,
+      "check": "ok"
+    },
+    {
+      "name": "algebra_fork46",
+      "kind": "clmm_algebra",
+      "status": "todo",
+      "address": "0x16494a80e08bcb9285d87b67149d7b01774d82f8",
+      "has_code": true,
+      "check": "ok"
+    }
+  ],
+  "failures": 0
+}

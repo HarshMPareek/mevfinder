@@ -1,0 +1,950 @@
+{
+  "row": {
+    "tx_hash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+    "block_number": 51285383,
+    "tx_index": 251,
+    "tx_from": "0x2a818a31d9e4cc51217adda95b2b754acd9e58f1",
+    "tx_to": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+    "is_arb": false,
+    "arb_class": "single_swap",
+    "n_legs": 1,
+    "tokens": [
+      "0x4200000000000000000000000000000000000006",
+      "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    ],
+    "venues": [
+      "0xd69e78df9972eea3d0a3bcc83243d8b2583052c5"
+    ],
+    "kinds": [
+      "mm_pool_fcfa"
+    ],
+    "dexes": [],
+    "sequential_chain": false,
+    "beneficiary": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+    "profit_token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "gross_profit_raw": "1074434560",
+    "gross_delta_raw": 1074434560,
+    "dislocation_evidence": null,
+    "architecture": "UNKNOWN",
+    "slot_index": null,
+    "slot_index_est": null,
+    "tof_est": null,
+    "trigger_type": "unknown",
+    "trigger_tx_index": null,
+    "trigger_pool": null,
+    "economics": {
+      "family": "op-stack",
+      "gas_used": 379317,
+      "effective_gas_price": 9319867,
+      "base_fee_per_gas": 5000000,
+      "priority_fee_per_gas": 4319867,
+      "total_fee_wei": 3535911728268,
+      "base_fee_wei": 1896585000000,
+      "priority_fee_wei": 1638598990839,
+      "l1_fee_wei": 727737429,
+      "l1_gas_used": 2637,
+      "timeboosted": null,
+      "gross_profit_raw": {
+        "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": 1074434560
+      }
+    },
+    "coinbase_transfer_wei": null,
+    "price_moves": {},
+    "payouts": {
+      "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": {
+        "0x498581ff718922c3f8e6a244956af099b2652b2b": "112275",
+        "0x501568a7c6d9257ded9506008de044565c68fd60": "1074322285"
+      }
+    },
+    "gross_unreliable": false,
+    "confidence": 0.9,
+    "reasons": [
+      "single_swap",
+      "unconsumed_outputs",
+      "unsourced_inputs"
+    ],
+    "classifier_version": "0.4.0-base-port.1",
+    "event_label": {
+      "tx_hash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+      "block_number": 51285383,
+      "tx_index": 251,
+      "tx_from": "0x2a818a31d9e4cc51217adda95b2b754acd9e58f1",
+      "tx_to": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+      "is_arb": false,
+      "arb_class": "single_swap",
+      "n_legs": 1,
+      "tokens": [
+        "0x4200000000000000000000000000000000000006",
+        "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      ],
+      "venues": [
+        "0xd69e78df9972eea3d0a3bcc83243d8b2583052c5"
+      ],
+      "kinds": [
+        "mm_pool_fcfa"
+      ],
+      "dexes": [],
+      "sequential_chain": false,
+      "beneficiary": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+      "profit_token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "gross_profit_raw": 1074434560,
+      "gross_delta_raw": 1074434560,
+      "dislocation_evidence": null,
+      "architecture": "UNKNOWN",
+      "slot_index": null,
+      "slot_index_est": null,
+      "tof_est": null,
+      "trigger_type": "unknown",
+      "trigger_tx_index": null,
+      "trigger_pool": null,
+      "economics": {
+        "family": "op-stack",
+        "gas_used": 379317,
+        "effective_gas_price": 9319867,
+        "base_fee_per_gas": 5000000,
+        "priority_fee_per_gas": 4319867,
+        "total_fee_wei": 3535911728268,
+        "base_fee_wei": 1896585000000,
+        "priority_fee_wei": 1638598990839,
+        "l1_fee_wei": 727737429,
+        "l1_gas_used": 2637,
+        "timeboosted": null,
+        "gross_profit_raw": {
+          "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": 1074434560
+        }
+      },
+      "coinbase_transfer_wei": null,
+      "price_moves": {},
+      "payouts": {
+        "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": {
+          "0x498581ff718922c3f8e6a244956af099b2652b2b": "112275",
+          "0x501568a7c6d9257ded9506008de044565c68fd60": "1074322285"
+        }
+      },
+      "gross_unreliable": false,
+      "confidence": 0.9,
+      "reasons": [
+        "single_swap",
+        "unconsumed_outputs",
+        "unsourced_inputs"
+      ],
+      "classifier_version": "0.4.0-base-port.1"
+    },
+    "gross_source": "events",
+    "fees": {
+      "is_system": false,
+      "gas_used": 379317,
+      "effective_gas_price_wei": 9319867,
+      "base_fee_per_gas_wei": 5000000,
+      "priority_fee_per_gas_wei": 4319867,
+      "priority_fee_per_gas_gwei": "0.004319867",
+      "max_priority_fee_per_gas_wei": 4319867,
+      "max_fee_per_gas_wei": 19319867,
+      "execution_fee_wei": 3535183990839,
+      "base_fee_wei": 1896585000000,
+      "priority_fee_wei": 1638598990839,
+      "l1_fee_wei": 727737429,
+      "operator_fee_wei": 0,
+      "total_fee_wei": 3535911728268,
+      "total_fee_eth": "0.000003535911728268",
+      "complete": true,
+      "missing_fields": []
+    },
+    "assessment": "not_arb",
+    "explorer_url": "https://basescan.org/tx/0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+    "trace": {
+      "status": "not_requested"
+    },
+    "known_recipient_received_wei": null,
+    "profit_symbol": "USDC",
+    "profit_decimals": 6,
+    "gross_profit": "1074.43456",
+    "net_after_gas_wei": null
+  },
+  "tx": {
+    "type": "0x2",
+    "chainId": "0x2105",
+    "nonce": "0x40fba",
+    "gas": "0xa0eae",
+    "maxFeePerGas": "0x126cc3b",
+    "maxPriorityFeePerGas": "0x41ea7b",
+    "to": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+    "value": "0x0",
+    "accessList": [],
+    "input": "0x230000000000000000000000004008db6d01498581ff718922c3f8e6a244956af099b2652b2b833589fcd6edb6e08f4c7c32d4f71b54bda029132b501568a7c6d9257ded9506008de044565c68fd600000000000000000000000004200000000000000000000000000000000000006833589fcd6edb6e08f4c7c32d4f71b54bda0291342000000000000000000000000000000000000062ed69e78df9972eea3d0a3bcc83243d8b2583052c500000000000000000000000000000000000000000000000000000000000000004200000000000000000000000000000000000006833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "r": "0x66b7c44349a479ff5d0d586d29f18531c7e6392637d28af9964950b53206c45e",
+    "s": "0x1f9fd446ed5ab06362397bf447c52d6b13831e87e56908026423752c7d76f7a0",
+    "yParity": "0x1",
+    "v": "0x1",
+    "hash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+    "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+    "blockNumber": "0x30e8d87",
+    "transactionIndex": "0xfb",
+    "blockTimestamp": "0x6aa777f1",
+    "from": "0x2a818a31d9e4cc51217adda95b2b754acd9e58f1",
+    "gasPrice": "0x8e35bb"
+  },
+  "receipt": {
+    "type": "0x2",
+    "status": "0x1",
+    "cumulativeGasUsed": "0x2031793",
+    "logs": [
+      {
+        "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x000000000000000000000000498581ff718922c3f8e6a244956af099b2652b2b",
+          "0x0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd"
+        ],
+        "data": "0x000000000000000000000000000000000000000000000000000000004008db6d",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x237",
+        "removed": false
+      },
+      {
+        "address": "0x501568a7c6d9257ded9506008de044565c68fd60",
+        "topics": [
+          "0xdc92a0eacd3ec58caf9083c172d9bc3e04206a32a80cbb1b6917440bc91b3545"
+        ],
+        "data": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffffffffffffffffffffffffffffffffffffffffffffffa11a1c50d7f57f300000000000000000000000000000000000000000000003a3cf63673a3f37f5d000000000000000000000000000000000000000000000000009848c169b4bc29",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x238",
+        "removed": false
+      },
+      {
+        "address": "0x4200000000000000000000000000000000000006",
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x000000000000000000000000501568a7c6d9257ded9506008de044565c68fd60",
+          "0x0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd"
+        ],
+        "data": "0x00000000000000000000000000000000000000000000000005ee5e3af280a80d",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x239",
+        "removed": false
+      },
+      {
+        "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+          "0x000000000000000000000000501568a7c6d9257ded9506008de044565c68fd60"
+        ],
+        "data": "0x000000000000000000000000000000000000000000000000000000004008db6d",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x23a",
+        "removed": false
+      },
+      {
+        "address": "0x501568a7c6d9257ded9506008de044565c68fd60",
+        "topics": [
+          "0x87d25816ca01843f551b4caa5eea03b5173c84c383573c63081fb7575378276e",
+          "0x0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+          "0x0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd"
+        ],
+        "data": "0x0000000000000000000000000000000000000000000000000000000000000001fffffffffffffffffffffffffffffffffffffffffffffffffa11a1c50d7f57f3000000000000000000000000000000000000000000000000000000004008db6dfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe00000000000000000000000000000000000000df1895fcc4a1430bb77e2ddaed000000000000000000000000000000000000000000000000004143c09b0450a3",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x23b",
+        "removed": false
+      },
+      {
+        "address": "0x4200000000000000000000000000000000000006",
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+          "0x000000000000000000000000d69e78df9972eea3d0a3bcc83243d8b2583052c5"
+        ],
+        "data": "0x00000000000000000000000000000000000000000000000005ee5e3af280a80d",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x23c",
+        "removed": false
+      },
+      {
+        "address": "0xd69e78df9972eea3d0a3bcc83243d8b2583052c5",
+        "topics": [
+          "0xca5f7361ea42c74fda1fb5461d79fc07a5a0bc02cc7a317ecb2dc5a27d68488e"
+        ],
+        "data": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x23d",
+        "removed": false
+      },
+      {
+        "address": "0xd69e78df9972eea3d0a3bcc83243d8b2583052c5",
+        "topics": [
+          "0xfcfa612587d1091cc6d8ce39878a7e6e8742c856865fc9d64db3e1a2f1ab52ef"
+        ],
+        "data": "0x000000000000000000000000420000000000000000000000000000000000000600000000000000000000000000000000000000000000000005ee5e3af280a80d00000000000000000000000000000000000000000000000000000000400a920000000000000000000000000000000000000000000000000000000000000000010000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x23e",
+        "removed": false
+      },
+      {
+        "address": "0xd69e78df9972eea3d0a3bcc83243d8b2583052c5",
+        "topics": [
+          "0x41d81c238d179b323f52fe9ae5587317d77b7d300b6eff3edba3c6ca3d56288f"
+        ],
+        "data": "0x7f6c00000000000000000000000000000ee16800d3332b0a588634c55a7a22657f6c000000000000000000000000000043639e941646f1e1dc17b7f7680a81a47f8000000000000000000000000000000ac31814c79417b35e7c73de8aa561e07f740000000000000000000000000000476ed6efd1dd540e39f8cad93b06619d7f7800000000000000000000000000000c1f38a4d162115db33573dec1d102347f8000000000000000000000000000001579b1b36c3bcfb505f600f57f20c00000000000000000000000000000000000000000000000000000000000000000007f7800000000000000000000000000000986bb384fa9af8ed1ee243d2e7c10cd",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x23f",
+        "removed": false
+      },
+      {
+        "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x000000000000000000000000d69e78df9972eea3d0a3bcc83243d8b2583052c5",
+          "0x0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd"
+        ],
+        "data": "0x00000000000000000000000000000000000000000000000000000000400a9200",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x240",
+        "removed": false
+      },
+      {
+        "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+          "0x000000000000000000000000498581ff718922c3f8e6a244956af099b2652b2b"
+        ],
+        "data": "0x00000000000000000000000000000000000000000000000000000000400a9200",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x241",
+        "removed": false
+      },
+      {
+        "address": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+        "topics": [
+          "0x1b3d7edb2e9c0b0e7c525b20aaaef0f5940d2ed71663c7d39266ecafac728859",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000d2be32dbf454ad8ff57851e9762cac12536ebee4",
+          "0x000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+        ],
+        "data": "0x0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd000000000000000000000000000000000000000000000000000000000001b693",
+        "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+        "blockNumber": "0x30e8d87",
+        "blockTimestamp": "0x6aa777f1",
+        "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+        "transactionIndex": "0xfb",
+        "logIndex": "0x242",
+        "removed": false
+      }
+    ],
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000040000000020000020000000400002000040100000100000000000000000000000000080001000000008000000040000000008000004000400000000081000000000000000000000800000120020200000000000800800010000000000000000000010000000000000000000004000440002002000000000000000002400000000000400000000004000000200000000000000400020800000000000800008000000000400000000000002000080000000000000000000000800008000000000000040020020000000020000002000000800001000000000000c00000000000000000004000000",
+    "transactionHash": "0x67fb22f7a75a2e0759e09087df80e17b409ccbc6f39d7372bef1eb0209cf3d61",
+    "transactionIndex": "0xfb",
+    "blockHash": "0x0f1107bae8d90a6fcacc8f52e24a327adde9705bfacc7575a89c0213aeac05ba",
+    "blockNumber": "0x30e8d87",
+    "gasUsed": "0x5c9b5",
+    "effectiveGasPrice": "0x8e35bb",
+    "blobGasUsed": "0x5ed0",
+    "from": "0x2a818a31d9e4cc51217adda95b2b754acd9e58f1",
+    "to": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+    "contractAddress": null,
+    "l1GasPrice": "0x2ab06d5",
+    "l1GasUsed": "0xa4d",
+    "l1Fee": "0x2b606455",
+    "l1BaseFeeScalar": "0x8dd",
+    "l1BlobBaseFee": "0x284f3e",
+    "l1BlobBaseFeeScalar": "0x101c12",
+    "daFootprintGasScalar": "0x94"
+  },
+  "trace": {
+    "from": "0x2a818a31d9e4cc51217adda95b2b754acd9e58f1",
+    "gas": "0xa0eae",
+    "gasUsed": "0x5c9b5",
+    "to": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+    "input": "0x230000000000000000000000004008db6d01498581ff718922c3f8e6a244956af099b2652b2b833589fcd6edb6e08f4c7c32d4f71b54bda029132b501568a7c6d9257ded9506008de044565c68fd600000000000000000000000004200000000000000000000000000000000000006833589fcd6edb6e08f4c7c32d4f71b54bda0291342000000000000000000000000000000000000062ed69e78df9972eea3d0a3bcc83243d8b2583052c500000000000000000000000000000000000000000000000000000000000000004200000000000000000000000000000000000006833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "calls": [
+      {
+        "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+        "gas": "0x97625",
+        "gasUsed": "0x5753d",
+        "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+        "input": "0x48c894910000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000011300000000000000000000000badc0ffee800000000000000100000000000000010000000000000000000000004008db6d01498581ff718922c3f8e6a244956af099b2652b2b833589fcd6edb6e08f4c7c32d4f71b54bda029132b501568a7c6d9257ded9506008de044565c68fd600000000000000000000000004200000000000000000000000000000000000006833589fcd6edb6e08f4c7c32d4f71b54bda0291342000000000000000000000000000000000000062ed69e78df9972eea3d0a3bcc83243d8b2583052c500000000000000000000000000000000000000000000000000000000000000004200000000000000000000000000000000000006833589fcd6edb6e08f4c7c32d4f71b54bda0291300000000000000000000000000",
+        "output": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000",
+        "calls": [
+          {
+            "from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+            "gas": "0x94bf3",
+            "gasUsed": "0x56d78",
+            "to": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+            "input": "0x91dd73460000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000011300000000000000000000000badc0ffee800000000000000100000000000000010000000000000000000000004008db6d01498581ff718922c3f8e6a244956af099b2652b2b833589fcd6edb6e08f4c7c32d4f71b54bda029132b501568a7c6d9257ded9506008de044565c68fd600000000000000000000000004200000000000000000000000000000000000006833589fcd6edb6e08f4c7c32d4f71b54bda0291342000000000000000000000000000000000000062ed69e78df9972eea3d0a3bcc83243d8b2583052c500000000000000000000000000000000000000000000000000000000000000004200000000000000000000000000000000000006833589fcd6edb6e08f4c7c32d4f71b54bda0291300000000000000000000000000",
+            "output": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "calls": [
+              {
+                "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                "gas": "0x91661",
+                "gasUsed": "0x2616",
+                "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                "input": "0x70a082310000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "calls": [
+                  {
+                    "from": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                    "gas": "0x8d684",
+                    "gasUsed": "0x9f9",
+                    "to": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+                    "input": "0x70a082310000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                    "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                    "value": "0x0",
+                    "type": "DELEGATECALL"
+                  }
+                ],
+                "type": "STATICCALL"
+              },
+              {
+                "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                "gas": "0x8ecec",
+                "gasUsed": "0x40a7",
+                "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                "input": "0x0b0d9c09000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd000000000000000000000000000000000000000000000000000000004008db6d",
+                "calls": [
+                  {
+                    "from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                    "gas": "0x8c37a",
+                    "gasUsed": "0x3a73",
+                    "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                    "input": "0xa9059cbb0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd000000000000000000000000000000000000000000000000000000004008db6d",
+                    "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                    "calls": [
+                      {
+                        "from": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                        "gas": "0x89de4",
+                        "gasUsed": "0x37b7",
+                        "to": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+                        "input": "0xa9059cbb0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd000000000000000000000000000000000000000000000000000000004008db6d",
+                        "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                        "value": "0x0",
+                        "type": "DELEGATECALL"
+                      }
+                    ],
+                    "value": "0x0",
+                    "type": "CALL"
+                  }
+                ],
+                "value": "0x0",
+                "type": "CALL"
+              },
+              {
+                "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                "gas": "0x89f98",
+                "gasUsed": "0x2a84f",
+                "to": "0xf3fb883566d91bcf9beb4e8cf3d01925e0c013c4",
+                "input": "0xf1da6436000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913000000000000000000000000000000000000000000000000000000004008db6d000000000000000000000000000000000000000000000000000000000000002b000000000000000000000000501568a7c6d9257ded9506008de044565c68fd600000000000000000000000004200000000000000000000000000000000000006000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000004200000000000000000000000000000000000006",
+                "calls": [
+                  {
+                    "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                    "gas": "0x86fcf",
+                    "gasUsed": "0x29aaa",
+                    "to": "0xf90aab0632c8392362b9173a6a31d5d530799f38",
+                    "input": "0xf1da6436000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913000000000000000000000000000000000000000000000000000000004008db6d000000000000000000000000000000000000000000000000000000000000002b000000000000000000000000501568a7c6d9257ded9506008de044565c68fd600000000000000000000000004200000000000000000000000000000000000006000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000004200000000000000000000000000000000000006",
+                    "calls": [
+                      {
+                        "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                        "gas": "0x83db0",
+                        "gasUsed": "0x28783",
+                        "to": "0x501568a7c6d9257ded9506008de044565c68fd60",
+                        "input": "0xe24f08840000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004008db6d00000000000000000000000000000000ffffffffffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000004000000000000000000000000badc0ffee0000000000000003000000000000002b000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000000000000000000000000000000000000000000000",
+                        "output": "0xfffffffffffffffffffffffffffffffffffffffffffffffffa11a1c50d7f57f3000000000000000000000000000000000000000000000000000000004008db6d",
+                        "calls": [
+                          {
+                            "from": "0x501568a7c6d9257ded9506008de044565c68fd60",
+                            "gas": "0x7fad3",
+                            "gasUsed": "0x16396",
+                            "to": "0xbfb141d1f0253b1080289b9f945c0d92a8d75c79",
+                            "input": "0xc1701b67",
+                            "output": "0x0000000000000000000000000000000000000000000009d1981e7185287366aa0000000000000000000000000000000000000000000009d1e17ad15776089ada",
+                            "calls": [
+                              {
+                                "from": "0xbfb141d1f0253b1080289b9f945c0d92a8d75c79",
+                                "gas": "0x7bdbf",
+                                "gasUsed": "0x2515",
+                                "to": "0x1e266e7bd2cd8597171df7f3d36ebdbc7ee53e91",
+                                "input": "0xe3079c1b96d46ad8cdacc37968d59e5fd79dd7b18d6ea3df000000000000000021050000000000000000000000000000501568a7c6d9257ded9506008de044565c68fd60",
+                                "output": "0x0000000000000000000000000000000000000000000000000000003a870730000000000000000000000000000000000000000000000000000000000000000038000000000000000000000000000000000000000000000000000000000000003a000000000000000000000000000000000000000000000000000000006aa777ef",
+                                "value": "0x0",
+                                "type": "CALL"
+                              },
+                              {
+                                "from": "0xbfb141d1f0253b1080289b9f945c0d92a8d75c79",
+                                "gas": "0x79656",
+                                "gasUsed": "0xafc",
+                                "to": "0x1e266e7bd2cd8597171df7f3d36ebdbc7ee53e91",
+                                "input": "0x893ddf8796d46ad8cdacc37968d59e5fd79dd7b18d6ea3df000000000000000021050000",
+                                "output": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                                "type": "STATICCALL"
+                              },
+                              {
+                                "from": "0xbfb141d1f0253b1080289b9f945c0d92a8d75c79",
+                                "gas": "0x776b6",
+                                "gasUsed": "0x34dc",
+                                "to": "0xbcf85224fc0756b9fa45aa7892530b47e10b6433",
+                                "input": "0xfeaf968c",
+                                "output": "0x00000000000000000000000000000000000000000000000100000000000000140000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006a3ea973000000000000000000000000000000000000000000000000000000006aa6d8010000000000000000000000000000000000000000000000010000000000000014",
+                                "calls": [
+                                  {
+                                    "from": "0xbcf85224fc0756b9fa45aa7892530b47e10b6433",
+                                    "gas": "0x73bcd",
+                                    "gasUsed": "0x14b3",
+                                    "to": "0x606c6ecbd272e2174f6710b5974f23fe9899602e",
+                                    "input": "0xfeaf968c",
+                                    "output": "0x00000000000000000000000000000000000000000000000000000000000000140000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006a3ea973000000000000000000000000000000000000000000000000000000006aa6d8010000000000000000000000000000000000000000000000000000000000000014",
+                                    "type": "STATICCALL"
+                                  }
+                                ],
+                                "type": "STATICCALL"
+                              },
+                              {
+                                "from": "0xbfb141d1f0253b1080289b9f945c0d92a8d75c79",
+                                "gas": "0x72395",
+                                "gasUsed": "0x4816",
+                                "to": "0x71041dddad3595f9ced3dccfbe3d1f4b0a16bb70",
+                                "input": "0xfeaf968c",
+                                "output": "0x0000000000000000000000000000000000000000000000030000000000000b820000000000000000000000000000000000000000000000000000003a95e14f64000000000000000000000000000000000000000000000000000000006aa776c8000000000000000000000000000000000000000000000000000000006aa776d70000000000000000000000000000000000000000000000030000000000000b82",
+                                "calls": [
+                                  {
+                                    "from": "0x71041dddad3595f9ced3dccfbe3d1f4b0a16bb70",
+                                    "gas": "0x6e9f8",
+                                    "gasUsed": "0x27ed",
+                                    "to": "0x05c84a58fe042275b37db038baacd15f410c7bb0",
+                                    "input": "0xfeaf968c",
+                                    "output": "0x0000000000000000000000000000000000000000000000000000000000000b820000000000000000000000000000000000000000000000000000003a95e14f64000000000000000000000000000000000000000000000000000000006aa776c8000000000000000000000000000000000000000000000000000000006aa776d70000000000000000000000000000000000000000000000000000000000000b82",
+                                    "type": "STATICCALL"
+                                  }
+                                ],
+                                "type": "STATICCALL"
+                              },
+                              {
+                                "from": "0xbfb141d1f0253b1080289b9f945c0d92a8d75c79",
+                                "gas": "0x6cfbc",
+                                "gasUsed": "0x3d1a",
+                                "to": "0x7e860098f58bbfc8648a4311b374b1d669a2bc6b",
+                                "input": "0xfeaf968c",
+                                "output": "0x00000000000000000000000000000000000000000000000300000000000000190000000000000000000000000000000000000000000000000000000005f5a7e7000000000000000000000000000000000000000000000000000000006aa699f7000000000000000000000000000000000000000000000000000000006aa69a050000000000000000000000000000000000000000000000030000000000000019",
+                                "calls": [
+                                  {
+                                    "from": "0x7e860098f58bbfc8648a4311b374b1d669a2bc6b",
+                                    "gas": "0x6976f",
+                                    "gasUsed": "0x1cf1",
+                                    "to": "0x68be4c50235205ede361ac8244b1ee221cdda5e2",
+                                    "input": "0xfeaf968c",
+                                    "output": "0x00000000000000000000000000000000000000000000000000000000000000190000000000000000000000000000000000000000000000000000000005f5a7e7000000000000000000000000000000000000000000000000000000006aa699f7000000000000000000000000000000000000000000000000000000006aa69a050000000000000000000000000000000000000000000000000000000000000019",
+                                    "type": "STATICCALL"
+                                  }
+                                ],
+                                "type": "STATICCALL"
+                              }
+                            ],
+                            "value": "0x0",
+                            "type": "CALL"
+                          },
+                          {
+                            "from": "0x501568a7c6d9257ded9506008de044565c68fd60",
+                            "gas": "0x6244b",
+                            "gasUsed": "0x3139",
+                            "to": "0x4200000000000000000000000000000000000006",
+                            "input": "0xa9059cbb0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd00000000000000000000000000000000000000000000000005ee5e3af280a80d",
+                            "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                            "value": "0x0",
+                            "type": "CALL"
+                          },
+                          {
+                            "from": "0x501568a7c6d9257ded9506008de044565c68fd60",
+                            "gas": "0x5f2cb",
+                            "gasUsed": "0xcb2",
+                            "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                            "input": "0x70a08231000000000000000000000000501568a7c6d9257ded9506008de044565c68fd60",
+                            "output": "0x00000000000000000000000000000000000000000000000000000001d903e220",
+                            "calls": [
+                              {
+                                "from": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                                "gas": "0x5d87b",
+                                "gasUsed": "0x9f9",
+                                "to": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+                                "input": "0x70a08231000000000000000000000000501568a7c6d9257ded9506008de044565c68fd60",
+                                "output": "0x00000000000000000000000000000000000000000000000000000001d903e220",
+                                "value": "0x0",
+                                "type": "DELEGATECALL"
+                              }
+                            ],
+                            "type": "STATICCALL"
+                          },
+                          {
+                            "from": "0x501568a7c6d9257ded9506008de044565c68fd60",
+                            "gas": "0x5e384",
+                            "gasUsed": "0x2aad",
+                            "to": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                            "input": "0xc3251075fffffffffffffffffffffffffffffffffffffffffffffffffa11a1c50d7f57f3000000000000000000000000000000000000000000000000000000004008db6d0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000004000000000000000000000000badc0ffee0000000000000003000000000000002b000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                            "calls": [
+                              {
+                                "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                                "gas": "0x5c864",
+                                "gasUsed": "0x26e9",
+                                "to": "0xf3fb883566d91bcf9beb4e8cf3d01925e0c013c4",
+                                "input": "0x0c31e0612b03c3251075fffffffffffffffffffffffffffffffffffffffffffffffffa11a1c50d7f57f3000000000000000000000000000000000000000000000000000000004008db6d0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000004000000000000000000000000badc0ffee0000000000000003000000000000002b000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                                "calls": [
+                                  {
+                                    "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                                    "gas": "0x5b022",
+                                    "gasUsed": "0x2592",
+                                    "to": "0xf90aab0632c8392362b9173a6a31d5d530799f38",
+                                    "input": "0x0c31e0612b03c3251075fffffffffffffffffffffffffffffffffffffffffffffffffa11a1c50d7f57f3000000000000000000000000000000000000000000000000000000004008db6d0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000004000000000000000000000000badc0ffee0000000000000003000000000000002b000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                                    "calls": [
+                                      {
+                                        "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                                        "gas": "0x59430",
+                                        "gasUsed": "0x1fe3",
+                                        "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                                        "input": "0xa9059cbb000000000000000000000000501568a7c6d9257ded9506008de044565c68fd60000000000000000000000000000000000000000000000000000000004008db6d",
+                                        "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                                        "calls": [
+                                          {
+                                            "from": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                                            "gas": "0x57b57",
+                                            "gasUsed": "0x1d27",
+                                            "to": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+                                            "input": "0xa9059cbb000000000000000000000000501568a7c6d9257ded9506008de044565c68fd60000000000000000000000000000000000000000000000000000000004008db6d",
+                                            "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                                            "value": "0x0",
+                                            "type": "DELEGATECALL"
+                                          }
+                                        ],
+                                        "value": "0x0",
+                                        "type": "CALL"
+                                      }
+                                    ],
+                                    "value": "0x0",
+                                    "type": "DELEGATECALL"
+                                  }
+                                ],
+                                "value": "0x0",
+                                "type": "DELEGATECALL"
+                              }
+                            ],
+                            "value": "0x0",
+                            "type": "CALL"
+                          },
+                          {
+                            "from": "0x501568a7c6d9257ded9506008de044565c68fd60",
+                            "gas": "0x5b7c6",
+                            "gasUsed": "0x4e2",
+                            "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                            "input": "0x70a08231000000000000000000000000501568a7c6d9257ded9506008de044565c68fd60",
+                            "output": "0x00000000000000000000000000000000000000000000000000000002190cbd8d",
+                            "calls": [
+                              {
+                                "from": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                                "gas": "0x59e62",
+                                "gasUsed": "0x229",
+                                "to": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+                                "input": "0x70a08231000000000000000000000000501568a7c6d9257ded9506008de044565c68fd60",
+                                "output": "0x00000000000000000000000000000000000000000000000000000002190cbd8d",
+                                "value": "0x0",
+                                "type": "DELEGATECALL"
+                              }
+                            ],
+                            "type": "STATICCALL"
+                          }
+                        ],
+                        "value": "0x0",
+                        "type": "CALL"
+                      }
+                    ],
+                    "value": "0x0",
+                    "type": "DELEGATECALL"
+                  }
+                ],
+                "value": "0x0",
+                "type": "DELEGATECALL"
+              },
+              {
+                "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                "gas": "0x5ffbf",
+                "gasUsed": "0x1c9",
+                "to": "0x4200000000000000000000000000000000000006",
+                "input": "0x70a082310000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                "output": "0x00000000000000000000000000000000000000000000000005ee5e3af280a80e",
+                "type": "STATICCALL"
+              },
+              {
+                "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                "gas": "0x5fb2b",
+                "gasUsed": "0x1cfd6",
+                "to": "0xf3fb883566d91bcf9beb4e8cf3d01925e0c013c4",
+                "input": "0xf1da6436000000000000000000000000420000000000000000000000000000000000000600000000000000000000000000000000000000000000000005ee5e3af280a80d000000000000000000000000000000000000000000000000000000000000002e000000000000000000000000d69e78df9972eea3d0a3bcc83243d8b2583052c500000000000000000000000000000000000000000000000000000000000000000000000000000000000000004200000000000000000000000000000000000006000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                "calls": [
+                  {
+                    "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                    "gas": "0x5df91",
+                    "gasUsed": "0x1cbf5",
+                    "to": "0xf90aab0632c8392362b9173a6a31d5d530799f38",
+                    "input": "0xf1da6436000000000000000000000000420000000000000000000000000000000000000600000000000000000000000000000000000000000000000005ee5e3af280a80d000000000000000000000000000000000000000000000000000000000000002e000000000000000000000000d69e78df9972eea3d0a3bcc83243d8b2583052c500000000000000000000000000000000000000000000000000000000000000000000000000000000000000004200000000000000000000000000000000000006000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                    "calls": [
+                      {
+                        "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                        "gas": "0x5c29b",
+                        "gasUsed": "0xa0b",
+                        "to": "0x4200000000000000000000000000000000000006",
+                        "input": "0xdd62ed3e0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd000000000000000000000000d69e78df9972eea3d0a3bcc83243d8b2583052c5",
+                        "output": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                        "type": "STATICCALL"
+                      },
+                      {
+                        "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                        "gas": "0x5ad21",
+                        "gasUsed": "0x1afcb",
+                        "to": "0xd69e78df9972eea3d0a3bcc83243d8b2583052c5",
+                        "input": "0xacf0ae03000000000000000000000000420000000000000000000000000000000000000600000000000000000000000000000000000000000000000005ee5e3af280a80d00000000000000000000000000000000000000000000000000000000000000010000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd000000000000000000000000000000000000000000000000000000006aa777f2",
+                        "output": "0x00000000000000000000000000000000000000000000000000000000400a920000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                        "calls": [
+                          {
+                            "from": "0xd69e78df9972eea3d0a3bcc83243d8b2583052c5",
+                            "gas": "0x589e5",
+                            "gasUsed": "0x1f80",
+                            "to": "0x4200000000000000000000000000000000000006",
+                            "input": "0x23b872dd0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd000000000000000000000000d69e78df9972eea3d0a3bcc83243d8b2583052c500000000000000000000000000000000000000000000000005ee5e3af280a80d",
+                            "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                            "value": "0x0",
+                            "type": "CALL"
+                          },
+                          {
+                            "from": "0xd69e78df9972eea3d0a3bcc83243d8b2583052c5",
+                            "gas": "0x47c79",
+                            "gasUsed": "0x1254",
+                            "to": "0x245d352067e2a06fcdc8f8b63a0c330b2a713c70",
+                            "input": "0x2eae26a3000000000000000000000000000000000000000000000000000000000000009d",
+                            "output": "0x0000000000000000000000000000000000000000000000000000000000000000801653e2d6238da3c21187e7c06e19b90ea9e6eeb702602c9081c2e33eff1950",
+                            "type": "STATICCALL"
+                          },
+                          {
+                            "from": "0xd69e78df9972eea3d0a3bcc83243d8b2583052c5",
+                            "gas": "0x4202d",
+                            "gasUsed": "0x32a3",
+                            "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                            "input": "0xa9059cbb0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd00000000000000000000000000000000000000000000000000000000400a9200",
+                            "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                            "calls": [
+                              {
+                                "from": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                                "gas": "0x40d24",
+                                "gasUsed": "0x2fe7",
+                                "to": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+                                "input": "0xa9059cbb0000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd00000000000000000000000000000000000000000000000000000000400a9200",
+                                "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                                "value": "0x0",
+                                "type": "DELEGATECALL"
+                              }
+                            ],
+                            "value": "0x0",
+                            "type": "CALL"
+                          }
+                        ],
+                        "value": "0x0",
+                        "type": "CALL"
+                      }
+                    ],
+                    "value": "0x0",
+                    "type": "DELEGATECALL"
+                  }
+                ],
+                "value": "0x0",
+                "type": "DELEGATECALL"
+              },
+              {
+                "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                "gas": "0x42f7f",
+                "gasUsed": "0x611b",
+                "to": "0xf3fb883566d91bcf9beb4e8cf3d01925e0c013c4",
+                "input": "0x7429193b000000000000000000000000498581ff718922c3f8e6a244956af099b2652b2b000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                "calls": [
+                  {
+                    "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                    "gas": "0x41d6c",
+                    "gasUsed": "0x5f8f",
+                    "to": "0xf90aab0632c8392362b9173a6a31d5d530799f38",
+                    "input": "0x7429193b000000000000000000000000498581ff718922c3f8e6a244956af099b2652b2b000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                    "calls": [
+                      {
+                        "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                        "gas": "0x409d3",
+                        "gasUsed": "0x4e2",
+                        "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                        "input": "0x70a082310000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                        "output": "0x00000000000000000000000000000000000000000000000000000000400a9201",
+                        "calls": [
+                          {
+                            "from": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                            "gas": "0x3f726",
+                            "gasUsed": "0x229",
+                            "to": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+                            "input": "0x70a082310000000000000000000000007cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                            "output": "0x00000000000000000000000000000000000000000000000000000000400a9201",
+                            "value": "0x0",
+                            "type": "DELEGATECALL"
+                          }
+                        ],
+                        "type": "STATICCALL"
+                      },
+                      {
+                        "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                        "gas": "0x40247",
+                        "gasUsed": "0xa3f",
+                        "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                        "input": "0xa5841194000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                        "calls": [
+                          {
+                            "from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                            "gas": "0x3ee97",
+                            "gasUsed": "0x4e2",
+                            "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                            "input": "0x70a08231000000000000000000000000498581ff718922c3f8e6a244956af099b2652b2b",
+                            "output": "0x000000000000000000000000000000000000000000000000000010de4dee1b1f",
+                            "calls": [
+                              {
+                                "from": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                                "gas": "0x3dc57",
+                                "gasUsed": "0x229",
+                                "to": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+                                "input": "0x70a08231000000000000000000000000498581ff718922c3f8e6a244956af099b2652b2b",
+                                "output": "0x000000000000000000000000000000000000000000000000000010de4dee1b1f",
+                                "value": "0x0",
+                                "type": "DELEGATECALL"
+                              }
+                            ],
+                            "type": "STATICCALL"
+                          }
+                        ],
+                        "value": "0x0",
+                        "type": "CALL"
+                      },
+                      {
+                        "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                        "gas": "0x3f6c3",
+                        "gasUsed": "0x14f3",
+                        "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                        "input": "0xa9059cbb000000000000000000000000498581ff718922c3f8e6a244956af099b2652b2b00000000000000000000000000000000000000000000000000000000400a9200",
+                        "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                        "calls": [
+                          {
+                            "from": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                            "gas": "0x3e460",
+                            "gasUsed": "0x1237",
+                            "to": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+                            "input": "0xa9059cbb000000000000000000000000498581ff718922c3f8e6a244956af099b2652b2b00000000000000000000000000000000000000000000000000000000400a9200",
+                            "output": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                            "value": "0x0",
+                            "type": "DELEGATECALL"
+                          }
+                        ],
+                        "value": "0x0",
+                        "type": "CALL"
+                      },
+                      {
+                        "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                        "gas": "0x3e15d",
+                        "gasUsed": "0xbd2",
+                        "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                        "input": "0x11da60b4",
+                        "output": "0x00000000000000000000000000000000000000000000000000000000400a9200",
+                        "calls": [
+                          {
+                            "from": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                            "gas": "0x3cec3",
+                            "gasUsed": "0x4e2",
+                            "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                            "input": "0x70a08231000000000000000000000000498581ff718922c3f8e6a244956af099b2652b2b",
+                            "output": "0x000000000000000000000000000000000000000000000000000010de8df8ad1f",
+                            "calls": [
+                              {
+                                "from": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                                "gas": "0x3bd03",
+                                "gasUsed": "0x229",
+                                "to": "0x2ce6311ddae708829bc0784c967b7d77d19fd779",
+                                "input": "0x70a08231000000000000000000000000498581ff718922c3f8e6a244956af099b2652b2b",
+                                "output": "0x000000000000000000000000000000000000000000000000000010de8df8ad1f",
+                                "value": "0x0",
+                                "type": "DELEGATECALL"
+                              }
+                            ],
+                            "type": "STATICCALL"
+                          }
+                        ],
+                        "value": "0x0",
+                        "type": "CALL"
+                      },
+                      {
+                        "from": "0x7cd2ce5e5c82956c743cbe6160f0e173c8d295cd",
+                        "gas": "0x3d1f6",
+                        "gasUsed": "0x22d8",
+                        "to": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                        "input": "0x156e29f6000000000000000000000000d2be32dbf454ad8ff57851e9762cac12536ebee4000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913000000000000000000000000000000000000000000000000000000000001b693",
+                        "value": "0x0",
+                        "type": "CALL"
+                      }
+                    ],
+                    "value": "0x0",
+                    "type": "DELEGATECALL"
+                  }
+                ],
+                "value": "0x0",
+                "type": "DELEGATECALL"
+              }
+            ],
+            "value": "0x0",
+            "type": "CALL"
+          }
+        ],
+        "value": "0x0",
+        "type": "CALL"
+      }
+    ],
+    "value": "0x0",
+    "type": "CALL"
+  }
+}

@@ -1,0 +1,88 @@
+# DEX registry for optimism. Scope decided by DefiLlama 24h volume share (2026-09-05) + on-chain presence.
+# Every entry starts unverified; `mevlab verify-registry --chain optimism` checks bytecode + probe and writes
+# optimism_dex.verified.json. status: in_scope | todo (needs addresses/decoder) | unsupported (decoder missing).
+
+[[dex]]
+name = "velodrome_slipstream"
+kind = "clmm_v3"
+status = "in_scope"
+volume_share_24h = 0.54
+factory = "0xCc0bDDB707055e04e497aB22a59c2aF4391cd12F"
+quoter = "0x89D8218ed5fF1e46d8dcd33fb0bbeE3be1621466"
+router = "0x0792a633F0c19c351081CF4B211F68F79bCc9676"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24)"
+probe = { fn = "allPoolsLength()", expect = "nonzero" }
+notes = "DefiLlama 'Velodrome V3' = Slipstream CL. Same fee-per-tick-spacing model as Aerodrome."
+
+[[dex]]
+name = "velodrome_slipstream_v2gauges"
+kind = "clmm_v3"
+status = "in_scope"
+factory = "0xe13Dd1fbA721Aa81a1826D9523AC9BC7d260c879"
+router = "0xbA3aEe516399388C779463183d00bB579f5041Ca"
+swap_fee_module = "0xbf571c205f45d29a99a9B5f0485E131D7E943f1c"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24)"
+probe = { fn = "allPoolsLength()", expect = "nonzero" }
+notes = "Newer factory with DynamicSwapFeeModule (from velodrome-finance/slipstream README)."
+
+[[dex]]
+name = "velodrome_v2"
+kind = "solidly_v2"
+status = "in_scope"
+volume_share_24h = 0.013
+factory = "0xF1046053aa5682b4F9a81b5481394DA16BE5FF5a"
+router = "0xa062aE8A9c5e11aaA026fc2670B0D65cCc8B2858"
+swap_event = "Swap(address,address,uint256,uint256,uint256,uint256)"
+probe = { fn = "allPoolsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "uniswap_v3"
+kind = "clmm_v3"
+status = "in_scope"
+volume_share_24h = 0.14
+factory = "0x1F98431c8aD98523631AE4a59f267346ea31F984"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24)"
+probe = { fn = "feeAmountTickSpacing(uint24)", arg = 500, expect = "uint:10" }
+
+[[dex]]
+name = "uniswap_v4"
+kind = "clmm_v4_singleton"
+status = "in_scope"
+volume_share_24h = 0.03
+pool_manager = "0x9a13f98cb987694c9f086b1f5eb990eea8264ec3"
+position_manager = "0x3c3ea4b57a46241e54610e5f022e5c45859a1017"  # Uniswap V4 PositionManager: poolKeys(bytes25) for pools whose Initialize log is pruned
+state_view = "0xc18a3169788f4f75a170290584eca6395c75ecdb"
+quoter = "0x1f3131a13296fb91c90870043742c3cdbff1a8d7"
+swap_event = "Swap(bytes32,address,int128,int128,uint160,uint128,int24,uint24)"
+init_event = "Initialize(bytes32,address,address,uint24,int24,address,uint160,int24)"
+
+[[dex]]
+name = "uniswap_v2"
+kind = "cpmm_v2"
+status = "in_scope"
+factory = "0x0c3c1c532F1e39EdF36BE9Fe0bE1410313E074Bf"
+router = "0x4A7b5Da61326A6379179b40d00F57E5bbDC962c2"
+swap_event = "Swap(address,uint256,uint256,uint256,uint256,address)"
+probe = { fn = "allPairsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "balancer_v2"
+kind = "vault"
+status = "in_scope"
+vault = "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
+swap_event = "Swap(bytes32,address,address,uint256,uint256)"
+probe = { fn = "WETH()", expect = "address:0x4200000000000000000000000000000000000006" }
+
+[[dex]]
+name = "ekubo"
+kind = "singleton_flash"
+status = "todo"
+core = "0x00000000000014aA86C5d3c41765bb24e11bd701"
+notes = "Ekubo EVM V3 Core, same deterministic address on every chain (docs.ekubo.org). Swap is emitted with log0 (116 bytes, NO topics): cannot be found by topic filter; filter by address=Core and data length. Decoder + PoolKey (token0, token1, config=fee/tickSpacing/extension) TODO. Extensions: Oracle 0x517E…, TWAMM 0xd47f…, MEVCapture 0x5555fF9Ff2757500BF4EE020DcfD0210CFfa41Be."
+
+[[dex]]
+name = "woofi"
+kind = "pmm_woofi"
+status = "in_scope"
+swap_event = "WooSwap(address,address,uint256,uint256,address,address,address,uint256,uint256)"
+notes = "[chain 2026-10-08] 7 WooSwap logs on trace venue 0x5520385b… in 30 blocks."

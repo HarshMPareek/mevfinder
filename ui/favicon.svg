@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- the MEV Finder mark, simplified for 16-32 px: bolder lens and handle, one gold node -->
+  <defs>
+    <linearGradient id="mf-fav" x1="6" y1="2" x2="58" y2="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset=".48" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#4338ca"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="62" height="62" rx="15" fill="url(#mf-fav)"/>
+  <circle cx="27" cy="27" r="14" fill="#0b1f4d" fill-opacity=".3" stroke="#ffffff" stroke-width="6"/>
+  <path d="M38 38 L50 50" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="27" cy="27" r="5.2" fill="#facc15"/>
+</svg>

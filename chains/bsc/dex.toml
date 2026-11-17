@@ -1,0 +1,94 @@
+# DEX registry for BNB Smart Chain. Every entry starts unverified; `./arb -c bsc verify-registry` checks bytecode and
+# the probe call on chain and writes dex.verified.json. status: in_scope | todo (needs addresses/decoder).
+# Scope: PancakeSwap (V2, V3, Infinity) carries most BSC volume; Uniswap V2/V3/V4, BiSwap, ApeSwap, MDEX, DODO are the
+# other venues seen in the 2026-10-07 keyless census (experiments/exp27 in the research repo).
+
+[[dex]]
+name = "pancakeswap_v2"
+kind = "cpmm_v2"
+status = "in_scope"
+factory = "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73"
+router = "0x10ED43C718714eb63d5aA57B78B54704E256024E"
+swap_event = "Swap(address,uint256,uint256,uint256,uint256,address)"
+probe = { fn = "allPairsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "pancakeswap_v3"
+kind = "clmm_v3"
+status = "in_scope"
+factory = "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865"
+router = "0x13f4EA83D0bd40E75C8222255bc855a974568Dd4"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24,uint128,uint128)"
+probe = { fn = "feeAmountTickSpacing(uint24)", arg = 500, expect = "uint:10" }
+
+[[dex]]
+name = "pancakeswap_infinity_cl"
+kind = "clmm_v4_singleton"
+status = "in_scope"
+pool_manager = "0xa0FfB9c1CE1Fe56963B0321B32E7A0302114058b"
+vault = "0x238a358808379702088667322f80aC48bAd5e6c4"
+swap_event = "Swap(bytes32,address,int128,int128,uint160,uint128,int24,uint24,uint16)"
+init_event = "Initialize(bytes32,address,address,address,uint24,bytes32,uint160,int24)"
+notes = "PancakeSwap Infinity (V4-style singleton with a separate Vault). Event layouts are Uniswap V4's plus protocolFee / parameters; decoder verified against live logs in the BSC validation pass. Bin pools (0xC697d2…) are undecoded."
+
+[[dex]]
+name = "uniswap_v3"
+kind = "clmm_v3"
+status = "in_scope"
+factory = "0xdB1d10011AD0Ff90774D0C6Bb92e5C5c8b4461F7"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24)"
+probe = { fn = "feeAmountTickSpacing(uint24)", arg = 500, expect = "uint:10" }
+
+[[dex]]
+name = "uniswap_v2"
+kind = "cpmm_v2"
+status = "in_scope"
+factory = "0x8909Dc15e40173Ff4699343b6eB8132c65e18eC6"
+swap_event = "Swap(address,uint256,uint256,uint256,uint256,address)"
+probe = { fn = "allPairsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "uniswap_v4"
+kind = "clmm_v4_singleton"
+status = "in_scope"
+pool_manager = "0x28e2Ea090877bF75740558f6BFB36A5ffeE9e9dF"
+position_manager = "0x7a4a5c919ae2541aed11041a1aeee68f1287f95b"  # Uniswap V4 PositionManager: poolKeys(bytes25) for pools whose Initialize log is pruned
+swap_event = "Swap(bytes32,address,int128,int128,uint160,uint128,int24,uint24)"
+init_event = "Initialize(bytes32,address,address,uint24,int24,address,uint160,int24)"
+
+[[dex]]
+name = "biswap"
+kind = "cpmm_v2"
+status = "in_scope"
+factory = "0x858E3312ed3A876947EA49d572A7C42DE08af7EE"
+swap_event = "Swap(address,uint256,uint256,uint256,uint256,address)"
+probe = { fn = "allPairsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "apeswap"
+kind = "cpmm_v2"
+status = "in_scope"
+factory = "0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6"
+swap_event = "Swap(address,uint256,uint256,uint256,uint256,address)"
+probe = { fn = "allPairsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "mdex"
+kind = "cpmm_v2"
+status = "in_scope"
+factory = "0x3CD1C46068dAEa5Ebb0d3f55F6915B10648062B8"
+swap_event = "Swap(address,uint256,uint256,uint256,uint256,address)"
+probe = { fn = "allPairsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "thena"
+kind = "clmm_algebra"
+status = "todo"
+notes = "THENA (Algebra-based CL + Solidly V1 pairs). V3-topic swaps resolve through token0()/token1() without a factory entry; Solidly pairs use the solidly_v2 Swap layout. Factories to be added after verification."
+
+[[dex]]
+name = "dodo_v2"
+kind = "pmm_dodo"
+status = "in_scope"
+swap_event = "DODOSwap(address,address,uint256,uint256,address,address)"
+notes = "DODO V2 pools emit DODOSwap with both tokens in the event; no factory needed."

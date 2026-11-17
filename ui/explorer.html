@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MEV Finder · Ops</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="explorer">
+<header class="ex-top">
+  <div class="ex-brand">
+    <a class="brand" href="/" data-dashboard><span class="logo" aria-hidden="true"></span><span class="title">MEV Finder · ops</span></a>
+    <span class="sub">every arbitrage, sandwich and liquidation, block by block</span>
+  </div>
+  <nav class="chains" id="chain-tabs" aria-label="Chains"></nav>
+  <div class="actions"><a class="ghost-link" href="/" data-dashboard>Dashboard</a><button id="theme-toggle" class="ghost" type="button" aria-label="Toggle theme">Theme</button></div>
+</header>
+
+<section class="ex-search card">
+  <form id="search" autocomplete="off">
+    <input id="search-input" type="text" placeholder="Block number · range 100-120 · tx hash · UTC time 2026-10-07 12:34" aria-label="Search">
+    <label class="muted" data-private-only>traces <select id="search-traces"><option value="candidates">candidates (default)</option><option value="all">all (slow, recall reference)</option><option value="none">none (events only)</option></select></label>
+    <button type="submit">Search</button>
+  </form>
+  <p class="muted" id="search-hint"></p>
+</section>
+
+<main id="main">
+  <section id="page-home" class="page active">
+    <div class="grid two">
+      <div class="card"><h3>Recently scanned blocks</h3><div id="home-blocks"></div></div>
+      <div class="card"><h3>Latest labelled transactions</h3><div id="home-txs"></div></div>
+    </div>
+    <div class="card" data-private-only><h3>Scan requests this session</h3><div id="home-jobs"></div></div>
+  </section>
+
+  <section id="page-block" class="page">
+    <div class="ex-title"><h2 id="block-h">Block</h2><div class="ex-nav"><button class="ghost" id="block-prev" type="button">‹ previous</button><button class="ghost" id="block-next" type="button">next ›</button><a class="ghost-link" id="block-proof" href="#" download data-private-only>Download proof (JSON)</a><button class="ghost" id="block-rescan" type="button" data-private-only>Rescan</button></div></div>
+    <div class="card"><div class="kv" id="block-overview"></div></div>
+    <div class="card"><h3>Transactions in execution order <span class="muted">(hover a cell to see what it backran or who it sandwiched)</span></h3><div id="block-map" class="txmap"></div></div>
+    <div class="card">
+      <div class="tabs" id="block-tabs"><button class="tab active" data-tab="mev" type="button">MEV transactions</button><button class="tab" data-tab="all" type="button">All transactions</button></div>
+      <div id="block-txs"></div>
+    </div>
+  </section>
+
+  <section id="page-tx" class="page">
+    <div class="ex-title"><h2>Transaction details</h2><div class="ex-nav"><a class="ghost-link" id="tx-explorer" href="#" target="_blank" rel="noopener">Open on the chain explorer ↗</a><a class="ghost-link" id="tx-raw" href="#" target="_blank" rel="noopener" data-private-only>Raw row (JSON)</a></div></div>
+    <div class="card"><div class="kv" id="tx-overview"></div></div>
+    <div class="card" id="tx-story-card" hidden><h3>Arbitrage route</h3><div id="tx-story"></div></div>
+    <div class="card" id="tx-costs-card"><h3>Where the gross went</h3><div id="tx-costs"></div></div>
+    <div class="card" data-private-only><h3>Classification and proof</h3><div class="kv" id="tx-proof"></div></div>
+    <div class="card" data-private-only>
+      <div class="tabs" id="tx-tabs"><button class="tab active" data-tab="transfers" type="button">Token transfers</button><button class="tab" data-tab="internal" type="button">Internal transactions</button><button class="tab" data-tab="route" type="button">Route legs</button><button class="tab" data-tab="copy" type="button">Explorer copy</button></div>
+      <div id="tx-tab-body"></div>
+    </div>
+  </section>
+
+  <section id="page-job" class="page">
+    <div class="ex-title"><h2 id="job-h">Scanning</h2></div>
+    <div class="card"><div class="kv" id="job-overview"></div><pre class="path" id="job-log"></pre><div id="job-result"></div></div>
+  </section>
+</main>
+<div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+<script src="txmap.js"></script>
+<script src="explorer.js"></script>
+</body>
+</html>

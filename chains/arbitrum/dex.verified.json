@@ -1,0 +1,99 @@
+{
+  "chain": "arbitrum",
+  "chain_id": 42161,
+  "checked_at": "2026-10-08T19:46:29.866134+00:00",
+  "entries": [
+    {
+      "name": "uniswap_v3",
+      "kind": "clmm_v3",
+      "status": "in_scope",
+      "swap_topic": "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67",
+      "decoder": true,
+      "address": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "has_code": true,
+      "probe_ok": true,
+      "check": "ok"
+    },
+    {
+      "name": "uniswap_v4",
+      "kind": "clmm_v4_singleton",
+      "status": "in_scope",
+      "swap_topic": "0x40e9cecb9f5f1f1c5b9c97dec2917b7ee92e57ba5563708daca94dd84ad7112f",
+      "decoder": true,
+      "address": "0x360e68faccca8ca495c1b759fd9eee466db9fb32",
+      "has_code": true,
+      "check": "ok"
+    },
+    {
+      "name": "pancakeswap_v3",
+      "kind": "clmm_v3",
+      "status": "in_scope",
+      "swap_topic": "0x19b47279256b2a23a1665c810c8d55a1758940ee09377d4f8d26497a3577dc83",
+      "decoder": true,
+      "address": "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865",
+      "has_code": true,
+      "probe_ok": true,
+      "check": "ok"
+    },
+    {
+      "name": "uniswap_v2",
+      "kind": "cpmm_v2",
+      "status": "in_scope",
+      "swap_topic": "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822",
+      "decoder": true,
+      "address": "0xf1D7CC64Fb4452F05c498126312eBE29f30Fbcf9",
+      "has_code": true,
+      "probe_ok": true,
+      "check": "ok"
+    },
+    {
+      "name": "sushiswap_v3",
+      "kind": "clmm_v3",
+      "status": "in_scope",
+      "swap_topic": "0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67",
+      "decoder": true,
+      "address": "0x1af415a1EbA07a4986a52B6f2e7dE7003D82231e",
+      "has_code": true,
+      "probe_ok": true,
+      "check": "ok"
+    },
+    {
+      "name": "balancer_v2",
+      "kind": "vault",
+      "status": "in_scope",
+      "swap_topic": "0x2170c741c41531aec20e7c107c24eecfdd15e69c9bb0a8dd37b1840b9e0b207b",
+      "decoder": true,
+      "address": "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
+      "has_code": true,
+      "probe_ok": true,
+      "check": "ok"
+    },
+    {
+      "name": "camelot_v3",
+      "kind": "clmm_algebra",
+      "status": "todo",
+      "check": "no_address"
+    },
+    {
+      "name": "fluid_dex",
+      "kind": "unknown",
+      "status": "todo",
+      "check": "no_address"
+    },
+    {
+      "name": "curve",
+      "kind": "stableswap",
+      "status": "todo",
+      "check": "no_address"
+    },
+    {
+      "name": "ekubo",
+      "kind": "singleton_flash",
+      "status": "todo",
+      "address": "0x00000000000014aA86C5d3c41765bb24e11bd701",
+      "has_code": true,
+      "check": "ok"
+    }
+  ],
+  "failures": 0
+}

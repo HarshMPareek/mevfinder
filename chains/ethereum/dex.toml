@@ -1,0 +1,93 @@
+# DEX registry for ethereum. Scope decided by DefiLlama 24h volume share (2026-09-05) + on-chain presence.
+# Every entry starts unverified; `mevlab verify-registry --chain ethereum` checks bytecode + probe and writes
+# ethereum_dex.verified.json. status: in_scope | todo (needs addresses/decoder) | unsupported (decoder missing).
+
+[[dex]]
+name = "uniswap_v4"
+kind = "clmm_v4_singleton"
+status = "in_scope"
+volume_share_24h = 0.30
+pool_manager = "0x000000000004444c5dc75cB358380D2e3dE08A90"
+position_manager = "0xbd216513d74c8cf14cf4747e6aaa6420ff64ee9e"  # Uniswap V4 PositionManager: poolKeys(bytes25) for pools whose Initialize log is pruned
+state_view = "0x7ffe42c4a5deea5b0fec41c94c136cf115597227"
+quoter = "0x52f0e24d1c21c8a0cb1e5a5dd6198556bd9e1203"
+swap_event = "Swap(bytes32,address,int128,int128,uint160,uint128,int24,uint24)"
+init_event = "Initialize(bytes32,address,address,uint24,int24,address,uint160,int24)"
+
+[[dex]]
+name = "uniswap_v3"
+kind = "clmm_v3"
+status = "in_scope"
+volume_share_24h = 0.24
+factory = "0x1F98431c8aD98523631AE4a59f267346ea31F984"
+quoter = "0x61fFE014bA17989E743c5F6cB21bF9697530B21e"
+router = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24)"
+probe = { fn = "feeAmountTickSpacing(uint24)", arg = 500, expect = "uint:10" }
+
+[[dex]]
+name = "uniswap_v2"
+kind = "cpmm_v2"
+status = "in_scope"
+factory = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"
+router = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
+swap_event = "Swap(address,uint256,uint256,uint256,uint256,address)"
+probe = { fn = "allPairsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "sushiswap_v2"
+kind = "cpmm_v2"
+status = "in_scope"
+factory = "0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac"
+swap_event = "Swap(address,uint256,uint256,uint256,uint256,address)"
+probe = { fn = "allPairsLength()", expect = "nonzero" }
+
+[[dex]]
+name = "pancakeswap_v3"
+kind = "clmm_v3"
+status = "in_scope"
+volume_share_24h = 0.005
+factory = "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865"
+swap_event = "Swap(address,address,int256,int256,uint160,uint128,int24,uint128,uint128)"
+probe = { fn = "feeAmountTickSpacing(uint24)", arg = 500, expect = "uint:10" }
+
+[[dex]]
+name = "balancer_v2"
+kind = "vault"
+status = "in_scope"
+vault = "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
+swap_event = "Swap(bytes32,address,address,uint256,uint256)"
+probe = { fn = "WETH()", expect = "address:0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" }
+
+[[dex]]
+name = "curve"
+kind = "stableswap"
+status = "todo"
+volume_share_24h = 0.079
+notes = "8% of ETH volume. TokenExchange events; pools via MetaRegistry 0xF98B45FA17DE75FB1aD0e7aFD971b0ca00e379fC (unverified). Decoder + math TODO."
+
+[[dex]]
+name = "fluid_dex"
+kind = "unknown"
+status = "todo"
+volume_share_24h = 0.07
+
+[[dex]]
+name = "maverick_v2"
+kind = "unknown"
+status = "todo"
+volume_share_24h = 0.025
+
+[[dex]]
+name = "ekubo"
+kind = "singleton_flash"
+status = "todo"
+core = "0x00000000000014aA86C5d3c41765bb24e11bd701"
+notes = "Ekubo EVM V3 Core, same deterministic address on every chain (docs.ekubo.org). Swap is emitted with log0 (116 bytes, NO topics): cannot be found by topic filter; filter by address=Core and data length. Decoder + PoolKey (token0, token1, config=fee/tickSpacing/extension) TODO. Extensions: Oracle 0x517E…, TWAMM 0xd47f…, MEVCapture 0x5555fF9Ff2757500BF4EE020DcfD0210CFfa41Be."
+
+[[dex]]
+name = "maverick_v2_pools"
+kind = "maverick_v2"
+status = "in_scope"
+swap_event = "PoolSwap(address,address,(uint256,bool,bool,int32),uint256,uint256)"
+notes = "Decoder added 2026-10-08; tokens inferred from the pool's transfers (tokenA()/tokenB())."

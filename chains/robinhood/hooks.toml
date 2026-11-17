@@ -1,0 +1,111 @@
+# Robinhood Chain V4 hooks and what they take from a swap (exp16 part 3). Every number is [chain] unless marked.
+# in_bps: the share of the INPUT the hook removes before the pool swaps (the pool receives amountIn × (1 − in_bps/10000));
+#         measured by the calldata differential of 2026-09-09 hour 01 (`experiments/exp15_live_loop/scripts/router_diff.py`: the pool got x × ratio).
+# out: "event" = a per-pool cut on the output fitted from the hook's fee events by the exporter (Pons HookFeeCollected,
+#      LaunchHook Trade); "none" = no output cut seen.
+# dynamic: the cut varies with state or gas (never exact; such pools are priced but not sent through).
+[[hook]]
+address = "0xe5e702641ea86f4ae6cc3cdaed2b886f976be044"
+name = "PonsV2MemeHook (fee/tax hook: setHookFeeBps, pendingCreatorTax, buyback vault; no sender gate) [chain: bytecode selectors, exp22]"
+in_bps = 0
+out = "event"
+dynamic = false
+[[hook]]
+address = "0x4b4f1fb5"
+name = "Pons (output-side policy fee, 1 % mode)"
+in_bps = 0
+out = "event"
+dynamic = false
+[[hook]]
+address = "0x0310cfeb"
+name = "Pons variant taking its 1 % on the input"
+in_bps = 100
+out = "none"
+dynamic = false
+[[hook]]
+address = "0xea553f82"
+name = "unknown, 2 % of the input (126 hops)"
+in_bps = 200
+out = "none"
+dynamic = false
+[[hook]]
+address = "0x64c61032"
+name = "unknown, 2 % of the input"
+in_bps = 200
+out = "none"
+dynamic = false
+[[hook]]
+address = "0x2380abf7"
+name = "unknown, 2 % of the input"
+in_bps = 200
+out = "none"
+dynamic = false
+[[hook]]
+address = "0x745d7176"
+name = "unknown, 1 % of the input"
+in_bps = 100
+out = "none"
+dynamic = false
+[[hook]]
+address = "0x4ea047fb"
+name = "unknown, 5.5 % of the input"
+in_bps = 550
+out = "none"
+dynamic = false
+[[hook]]
+address = "0x64e9ae10"
+name = "unknown, 1 bp of the input"
+in_bps = 1
+out = "none"
+dynamic = false
+[[hook]]
+address = "0x773de294"
+name = "varying 5.3–5.6 % of the input"
+in_bps = 550
+out = "none"
+dynamic = true
+[[hook]]
+address = "0x0a4e7528"
+name = "dynamic fee by gas available (C-CHAIN-34)"
+in_bps = 0
+out = "none"
+dynamic = true
+
+# exp22 (2026-09-15): hooks identified from bytecode selectors resolved through the public signature database and from
+# their revert strings (experiments/exp22_discovery_engine/results/hook_families.md). `gate` is documentation for the
+# planner: which swap directions a direct PoolManager caller may not take. Consumers ignore unknown keys.
+[[hook]]
+address = "0x3ad9e44cb65e518e452bfcb78952ca45b66a8a80"
+name = "launch hook of the 0x053e pair: SellNotAllowed(address) unless the swap sender is an authorized router [chain: call trace + selectors]"
+in_bps = 0
+out = "none"
+dynamic = false
+gate = "sell: authorizedRouters(address) only; buys open; liquidity: liquidityOperators / trustedPositionManager; blacklist"
+[[hook]]
+address = "0x4e3468951d49f2eea976ed0d6e75ffcb44a9a544"
+name = "Doppler-style launch hook (airlock, graduate, updateDynamicLPFee, SenderNotAuthorized on admin calls) [chain: selectors]"
+in_bps = 0
+out = "none"
+dynamic = true
+gate = "swaps open; dynamic LP fee; graduation changes the fee (P5 trigger)"
+[[hook]]
+address = "0x16d1560630ce74af4478d9b8ad46548a092a2000"
+name = "launchpad pair hook (OnlyLaunchpad, authorizePool, fixed PAIR_FEE / PAIR_TICK_SPACING) [chain: selectors]"
+in_bps = 0
+out = "none"
+dynamic = false
+gate = "swaps open; pool registration launchpad-only"
+[[hook]]
+address = "0x778b0c4eea7d35d66513b587ba87fc9084b0eacc"
+name = "LaunchHook (registerPool, seedLiquidity, NotSingleSided, PartialFillUnsupported, decaying launch fee via Trade events) [chain: selectors + exporter fit]"
+in_bps = 0
+out = "event"
+dynamic = false
+gate = "swaps open; exact-input only (partial fills revert)"
+[[hook]]
+address = "0x06a889870c8f83640d6816319f72e2aa579b6080"
+name = "vault/fee hook (ballotGate, operators, currentFee(poolId,direction), NativeNotSupported, pausable) [chain: selectors]"
+in_bps = 0
+out = "none"
+dynamic = true
+gate = "direction-dependent fee; native currency unsupported; pausable"
