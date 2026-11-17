@@ -5,10 +5,9 @@
 **MEV Finder watches six blockchains block by block and shows every arbitrage: who made it, how, and what they kept.**
 
 <a href="https://mevfinder.com"><img src="https://img.shields.io/badge/Open_the_site-mevfinder.com-2563eb?style=for-the-badge" alt="Open the site"></a>
-<a href="https://github.com/HarshMPareek/mevfinder/issues/new?template=wrong_classification.yml"><img src="https://img.shields.io/badge/Found_a_wrong_label%3F-tell_us-f59e0b?style=for-the-badge" alt="Report a wrong label"></a>
+<a href="https://github.com/HarshMPareek/mevfinder/issues/new"><img src="https://img.shields.io/badge/Found_a_wrong_label%3F-tell_us-f59e0b?style=for-the-badge" alt="Report a wrong label"></a>
 <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/Help_build_it-contribute-16a34a?style=for-the-badge" alt="Contribute"></a>
 
-[![CI](https://github.com/HarshMPareek/mevfinder/actions/workflows/ci.yml/badge.svg)](https://github.com/HarshMPareek/mevfinder/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](LICENSE)
 
 </div>
@@ -104,8 +103,8 @@ The full map: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 | You can | Here |
 |---|---|
-| 🐞 Report a wrong label | [open an issue](https://github.com/HarshMPareek/mevfinder/issues/new?template=wrong_classification.yml) with the link |
-| 🏊 Add a missing pool or token | [tell us](https://github.com/HarshMPareek/mevfinder/issues/new?template=new_venue.yml), or edit `chains/<chain>/dex.toml` |
+| 🐞 Report a wrong label | [open an issue](https://github.com/HarshMPareek/mevfinder/issues/new) with the link |
+| 🏊 Add a missing pool or token | [tell us](https://github.com/HarshMPareek/mevfinder/issues/new), or edit `chains/<chain>/dex.toml` |
 | ✍️ Write a Learn article | add a Markdown file to [`content/learn/`](content/learn) |
 | 🛠️ Fix a rule or a page | [CONTRIBUTING.md](CONTRIBUTING.md) |
 

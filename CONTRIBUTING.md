@@ -45,8 +45,5 @@ reads and what it produces. Comments explain why a rule exists, with the transac
 
 ## For maintainers
 
-`main` is protected by the ruleset in [`.github/rulesets/protect-main.json`](.github/rulesets/protect-main.json): no
-force pushes, no deletion, every change through a pull request, CI (`test`) green on an up-to-date branch, review
-threads resolved. Apply or update it with
-`gh api -X POST repos/HarshMPareek/mevfinder/rulesets --input .github/rulesets/protect-main.json`
-(rulesets need a public repository or GitHub Pro).
+`main` is protected: no force pushes, no deletion, every change through a pull request. A merged change goes live
+by itself once the server's tests and hand-label checks pass; if they fail, the site keeps running the previous version.
