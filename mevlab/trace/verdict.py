@@ -29,7 +29,7 @@ from mevlab.trace.calls import account_abstraction_sender, callees, delegator_ac
 from mevlab.trace.model import CLOSURE_TOL, DEAD_ADDRESS, EXACT_DUST_SHARE, FlashLoan, Movement, TraceVerdict
 from mevlab.trace.movements import claim_movements, movements, nets, terminal_receivers
 from mevlab.trace.operator import closed_gain, flash_lenders, party_group, party_view, pass_through_chain
-from mevlab.trace.route import continuity_gap, returning_route
+from mevlab.trace.route import continuity_gap, returning_route, route_surplus
 from mevlab.trace.venues import (
     conduits,
     foreign_claim_recipients,
@@ -40,6 +40,9 @@ from mevlab.trace.venues import (
     swap_lockers,
     venues_of,
 )
+
+# A leg taking more than twice what the previous leg delivered is fed from outside the route (continuity_gap >= 1).
+DISCONTINUITY_LIMIT = 1.0
 
 
 def trace_verdict(
@@ -693,6 +696,27 @@ class TraceAnalysis:
             self._route(tok, gross)
         return tv
 
+    def _fed_from_outside(self, path: list[dict[str, Any]]) -> bool:
+        """True when more than half of some route leg's input reached its venue from a party that is neither the
+        operator's group nor a venue of the transaction (pool-to-pool routing pays the next pool directly, and a
+        split route's other pools feed the same pool: BSC 0x02ccfe78…, three pools paying one)."""
+        inside = (
+            set(self.group)
+            | {str(v).split(":")[0] for v in self.venues}
+            | set(self.managers or ())
+            | {str(leg["venue"]).split(":")[0] for leg in path}
+        )
+        for leg in path[1:]:
+            venue, token = str(leg["venue"]).split(":")[0], leg["token_in"]
+            outside = sum(
+                m.amount
+                for m in self.movs
+                if m.receiver == venue and self._asset(m.token) == self._asset(token) and m.sender not in inside
+            )
+            if outside * 2 > int(leg["amount_in"]):
+                return True
+        return False
+
     def _route(self, tok: str, gross: int) -> None:
         """Rule: a cycle is a closed chain in one asset through distinct called venues, not merely a party that
         ends net positive. Without a returning route the gain is a fee, a rebate or a pass-through, never an arb.
@@ -746,4 +770,15 @@ class TraceAnalysis:
         gap = continuity_gap(path)
         if gap is not None:
             tv.notes.append(f"amount_discontinuity:{gap:.4f}")
+            if cycle_token == tok and gap >= DISCONTINUITY_LIMIT and self._fed_from_outside(path):
+                # A leg paid for mostly by someone outside the operator and the route's own pools: a router filling
+                # a user's sale, not an arbitrage. BSC 0x640c0286…: 28.9 USDT -> 0.052 WBNB, then 315 WBNB sent into
+                # the pool by another contract -> 175,654 USDT, paid back to the user, booked as a $175.6k cycle.
+                # The route can only claim what its own legs' rates produce. (A split route's extra input comes from
+                # the operator's other legs, so it never reaches this test.)
+                surplus = route_surplus(path)
+                if surplus <= 0 or gross * 100 > surplus * 101:
+                    tv.verdict = "gain_no_route"
+                    tv.notes.append(f"gain_exceeds_route_surplus:{surplus}")
+                    return
         tv.verdict = "cycle"

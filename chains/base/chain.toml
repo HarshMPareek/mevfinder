@@ -3,13 +3,14 @@
 name = "base"
 chain_id = 8453
 family = "op-stack"          # receipts carry l1Fee/l1GasUsed; priority fee -> SequencerFeeVault, base fee -> BaseFeeVault
-block_time_ms = 2000
+block_time_ms = 200            # 2 s until block 53,556,126; 200 ms blocks since 53,556,127 (2026-11-05 ~18:00 UTC, measured on our node)
 native_symbol = "ETH"
 weth = "0x4200000000000000000000000000000000000006"
 
 [ordering]
 policy = "fee_sorted"        # priority-fee sorted inside ~200 ms flashblocks; top_of_block = first user tx at the block's max fee
 flashblocks_per_block = 10
+flashblocks_until_block = 53556127   # from here each 200 ms block is its own priority-fee auction: no flashblock slots inside a block
 trigger_window_blocks = 3    # same-block triggers first; else the last other-party swap on the route's pools up to 3 blocks earlier (next-block arbitrage)
 
 [system]
@@ -65,6 +66,7 @@ log_range = 5000
 seed_chunk = 10000
 confirmations = 3
 trace_window = 9000
+cache_hours = 24      # raw block/trace cache: at 200 ms blocks a week of files would be ~10x what 2 s blocks kept
 
 # PancakeSwap Infinity keeps pool tokens in its Vault (0x238a3588…): the trace sees the Vault as the counterparty while the
 # Swap events come from the CL pool manager. Declared as the manager's member (as on BSC; registered on Base 2026-10-31).

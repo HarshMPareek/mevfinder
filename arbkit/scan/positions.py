@@ -162,7 +162,11 @@ def assign_positions(
     # upward priority-fee jumps inside the sealed block. It is an estimate (hypothesis C-CHAIN-5 in the research
     # notes), reported as `slot_index_est`, never as a measured boundary.
     slots: dict[int, int] = {}
-    if spec.ordering_policy == "fee_sorted" and spec.flashblocks_per_block > 0:
+    # Base: from block 53,556,127 (2026-11-05) every block is one 200 ms auction, so there are no slots to estimate.
+    flashblocks = spec.flashblocks_per_block > 0 and (
+        spec.flashblocks_until_block is None or block_number < spec.flashblocks_until_block
+    )
+    if spec.ordering_policy == "fee_sorted" and flashblocks:
         user = [r for r in sorted(rows, key=lambda r: r["tx_index"]) if not r["fees"]["is_system"]]
         fees = [r["fees"]["priority_fee_per_gas_wei"] or 0 for r in user]
         for r, slot in zip(user, slot_indexes(fees, spec.flashblocks_per_block)):
