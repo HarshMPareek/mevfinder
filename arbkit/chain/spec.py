@@ -68,6 +68,7 @@ class ChainSpec:
     link_original_trigger: bool = (
         False  # [ordering]: same-block trigger search passes own/competing txs (positions.py)
     )
+    flashblocks_until_block: int | None = None  # [ordering]: first block without flashblock slots (Base 200 ms blocks)
 
     @property
     def max_log_range(self) -> int | None:
@@ -182,6 +183,9 @@ def load_chain(name: str) -> ChainSpec:
         weth=str(chain["weth"]).lower(),
         ordering_policy=policy,
         flashblocks_per_block=int(ordering.get("flashblocks_per_block", 0)),
+        flashblocks_until_block=(
+            int(ordering["flashblocks_until_block"]) if "flashblocks_until_block" in ordering else None
+        ),
         trigger_window_blocks=int(ordering.get("trigger_window_blocks", 0)),
         link_original_trigger=bool(ordering.get("link_original_trigger", False)),
         system_tx_types=frozenset(int(t) for t in cfg.get("system", {}).get("tx_types", [])),

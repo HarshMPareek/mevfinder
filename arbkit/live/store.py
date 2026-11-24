@@ -600,10 +600,19 @@ def note_gap(conn, first: int, last: int, reason: str) -> None:
 
 
 def drop_old_txmaps(conn, keep_days: int = TXMAP_DAYS) -> int:
-    cutoff = int(datetime.now(timezone.utc).timestamp()) - keep_days * 86_400
-    return conn.execute(
-        "UPDATE blocks SET txmap=NULL WHERE txmap IS NOT NULL AND timestamp < ?", (cutoff,)
+    """Clear the block maps of whole UTC days older than `keep_days`, only the days not cleared yet (day index).
+    The follower calls this on its event loop: a timestamp filter scanned the whole blocks table (~50 s on
+    Robinhood, 2026-11-24), and every pass pushed ~370 blocks past the node's 128-block trace window."""
+    now = datetime.now(timezone.utc)
+    upto = (now - timedelta(days=keep_days)).strftime("%Y-%m-%d")
+    since = get_meta(conn, "txmaps_dropped_before") or (now - timedelta(days=keep_days + 2)).strftime("%Y-%m-%d")
+    if since >= upto:
+        return 0
+    n = conn.execute(
+        "UPDATE blocks SET txmap=NULL WHERE day >= ? AND day < ? AND txmap IS NOT NULL", (since, upto)
     ).rowcount
+    set_meta(conn, "txmaps_dropped_before", upto)
+    return n
 
 
 # ---- reads (dashboard) ------------------------------------------------------------------------------------------

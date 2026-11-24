@@ -481,3 +481,55 @@ def test_order_fill_from_an_eoa_is_not_a_cycle():
     tv = trace_verdict(tr, WETH)
     assert MAKER not in tv.venues
     assert tv.verdict in ("single_venue_loop", "no_taker", "no_venue")
+
+
+def test_route_fed_from_outside_is_not_a_cycle():
+    """BSC 0x640c0286…: a router sells a user's 315 WBNB for 175,654 USDT and pays it back; a 28.9 USDT side swap
+    closes a "route" whose second leg takes 6,000x what the first delivered. The route's own rates produce nothing:
+    the gain is the user's sale, not an arbitrage."""
+    from mevlab.trace.route import route_surplus
+
+    user = "0x5e5e00000000000000000000000000000000005e"
+    trace = call(
+        EOA,
+        BOT,
+        calls=[
+            call(BOT, USDC, transfer(POOL_A, 29 * 10**6)),
+            call(BOT, POOL_A, calls=[call(POOL_A, WETH, transfer(BOT, 52 * 10**15))]),
+            # the user's 315 WETH reach the second pool from another contract, never from the operator
+            call(BOT, ROUTER, calls=[call(ROUTER, WETH, transfer(POOL_B, 315 * 10**18))]),
+            call(BOT, POOL_B, calls=[call(POOL_B, USDC, transfer(BOT, 175_654 * 10**6))]),
+            call(BOT, USDC, transfer(user, 175_449 * 10**6)),
+        ],
+    )
+    tv = trace_verdict(trace, WETH)
+    assert tv.verdict != "cycle"
+    assert any(n.startswith("gain_exceeds_route_surplus") for n in tv.notes)
+    # a continuous route: the surplus is the last output minus the first input
+    path = [
+        {"amount_in": "100", "amount_out": "50"},
+        {"amount_in": "50", "amount_out": "103"},
+    ]
+    assert route_surplus(path) == 3
+    # the same rates with the second leg fed 100x from elsewhere still produce only 3
+    assert route_surplus([path[0], {"amount_in": "5000", "amount_out": "10300"}]) == 3
+
+
+def test_split_route_paid_by_the_operator_stays_a_cycle():
+    """A route split over two pools: the second hop takes twice what one first-hop pool delivered, but the operator
+    paid it from its own other leg, so the gap is not outside money."""
+    pool_c = "0xcccc00000000000000000000000000000000cccc"
+    trace = call(
+        EOA,
+        BOT,
+        calls=[
+            call(BOT, WETH, transfer(POOL_A, 5 * 10**17)),
+            call(BOT, POOL_A, calls=[call(POOL_A, USDC, transfer(BOT, 1500 * 10**6))]),
+            call(BOT, WETH, transfer(POOL_B, 5 * 10**17)),
+            call(BOT, POOL_B, calls=[call(POOL_B, USDC, transfer(BOT, 1500 * 10**6))]),
+            call(BOT, USDC, transfer(pool_c, 3000 * 10**6)),
+            call(BOT, pool_c, calls=[call(pool_c, WETH, transfer(BOT, 101 * 10**16))]),
+        ],
+    )
+    tv = trace_verdict(trace, WETH)
+    assert tv.verdict == "cycle" and tv.gross == 10**16

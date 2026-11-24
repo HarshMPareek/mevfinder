@@ -105,7 +105,7 @@
       ["Status", `<span class="badge ok">${state.public ? "indexed" : "scanned"}</span> ${rows.length} transactions classified; ${labelled.filter((r) => r.kind !== "trigger").length} carry an MEV label`],
       ["Timestamp", `${ts(block.timestamp)} <span class="muted">(${age(block.timestamp)})</span>`],
       ["Built by", (block.builder || first.block_builder_tag) ? `${esc(block.builder || first.block_builder_tag)} · fee recipient ${addr(block.producer || first.block_producer)}` : ((block.producer || first.block_producer) ? `${c.ordering_policy === "builder" ? "fee recipient" : "sequencer"} ${addr(block.producer || first.block_producer)}` : "—")],
-      ["Ordering", `${esc(c.ordering_policy)} · ${c.block_time_ms} ms blocks${c.name === "base" ? " · flashblock index estimated from fee jumps" : ""}`],
+      ["Ordering", `${esc(c.ordering_policy)} · ${c.block_time_ms} ms blocks`],
       ["Atomic cycles", `<strong>${positives.length}</strong> · gross ${money(gross)} · paid to the block ${money(paid)} · searchers kept <strong>${money(net)}</strong>`],
       ["Sandwiches", sandw.length ? `${sandw.length} bundle(s) · operator result ${money(sandw.reduce((a, r) => a + (r.sandwich.profit_usd || 0), 0))} · net ${money(sandw.reduce((a, r) => a + (r.sandwich.net_usd || 0), 0))}` : "0"],
       ["Other families", Object.entries(fam).filter(([k]) => !k.startsWith("atomic") && !k.startsWith("sandwich")).map(([k, v]) => `${chip(k)} ${v}`).join(" ") || "none"],

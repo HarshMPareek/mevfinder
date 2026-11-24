@@ -59,6 +59,17 @@ def returning_route(legs: list[Leg], token: str) -> list[dict[str, Any]]:
     ]
 
 
+def route_surplus(path: list[dict[str, Any]]) -> int:
+    """What the route itself produces from its first leg's input: that input carried through every leg at the leg's
+    executed rate, minus the input. Equal to last output - first input when each leg is funded by the one before;
+    a leg fed from elsewhere contributes only its rate, never the outside amount."""
+    value = int(path[0]["amount_in"])
+    start = value
+    for leg in path:
+        value = value * int(leg["amount_out"]) // int(leg["amount_in"])
+    return value - start
+
+
 def continuity_gap(path: list[dict[str, Any]], tol: float = 0.01) -> float | None:
     """Largest relative excess of a leg's input over the previous leg's output along the route (None when every
     leg is funded by the one before it within `tol`). An excess means the operator added inventory mid-route."""

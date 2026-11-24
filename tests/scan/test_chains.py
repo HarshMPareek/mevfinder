@@ -1054,3 +1054,31 @@ def test_two_wallets_through_one_router_are_not_a_sandwich_operator():
     rows[2]["tx_to"] = "0x" + "b7" * 20
     bundle = find_sandwiches(rows, receipts)[0]
     assert bundle["operator"] == EOA and bundle["operator_kind"] == "wallet"
+
+
+async def test_base_has_no_flashblock_slots_after_200ms_blocks():
+    """From block 53,556,127 (2026-11-05) Base seals a block every 200 ms: one auction per block, no slots inside."""
+    spec = load_chain("base")
+    assert spec.block_time_ms == 200 and spec.flashblocks_until_block == 53_556_127
+    txs, receipts = [], []
+    for i, fee in enumerate([9, 8, 20, 19]):
+        tx, receipt = make_tx([])
+        tx["hash"] = receipt["transactionHash"] = "0x" + f"{i + 1:02x}" * 32
+        receipt["effectiveGasPrice"] = hex(1_000_000 + fee * 10**6)
+        for obj in (tx, receipt):
+            obj["blockHash"] = "0x" + "a1" * 32
+            obj["transactionIndex"] = hex(i)
+            obj["blockNumber"] = hex(53_556_127)
+        txs.append(tx)
+        receipts.append(receipt)
+    block = {
+        "number": hex(53_556_127),
+        "hash": "0x" + "a1" * 32,
+        "timestamp": "0x10",
+        "baseFeePerGas": hex(1_000_000),
+        "miner": "0x" + "42" * 20,
+        "transactions": txs,
+    }
+    rows = await classify_block(spec, block, receipts, RESOLVER, trace_mode="none")
+    assert all(r.get("slot_index_est") is None for r in rows)
+    assert all(r.get("trigger_type") != "top_of_flashblock" for r in rows)

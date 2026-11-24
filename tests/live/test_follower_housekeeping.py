@@ -58,3 +58,32 @@ def test_housekeeping_returns_at_once_and_prunes_in_the_background(tmp_path, mon
     assert sorted(p.name for p in (data / "traces").iterdir()) == [fresh.name]
     assert any("housekeeping removed 50 cached files" in line for line in logs)
     assert livedb.get_meta(f.conn, "failed_attempts") is not None
+
+
+def test_old_block_maps_are_cleared_by_day_without_a_table_scan(tmp_path):
+    """The follower clears block maps on its event loop: a timestamp filter scanned every block (~50 s on Robinhood)
+    and pushed blocks past the node's trace window. Only the days not yet cleared are touched, through the day index."""
+    from datetime import datetime, timedelta, timezone
+
+    conn = livedb.connect(tmp_path / "s.sqlite")
+    now = datetime.now(timezone.utc)
+    for n, age in ((1, 40), (2, 31), (3, 29), (4, 0)):
+        day = (now - timedelta(days=age)).strftime("%Y-%m-%d")
+        conn.execute(
+            "INSERT INTO blocks(number, hash, timestamp, day, transactions, mev_rows, cycles, losses, candidates, "
+            "sandwiches, gross_usd, traced, trace_unavailable, info, txmap, source, classified_at) "
+            "VALUES (?, ?, 0, ?, 0, 0, 0, 0, 0, 0, 0, 1, 0, '{}', x'00', 'live', '')",
+            (n, f"0x{n}", day),
+        )
+    livedb.drop_old_txmaps(conn)
+    kept = [r[0] for r in conn.execute("SELECT number FROM blocks WHERE txmap IS NOT NULL ORDER BY number")]
+    # day 40 was older than the first pass's starting point (cleared by the old full pass already); 31 is cleared
+    assert kept == [1, 3, 4]
+    plan = " ".join(
+        str(r[-1]) for r in conn.execute(
+            "EXPLAIN QUERY PLAN UPDATE blocks SET txmap=NULL WHERE day >= ? AND day < ? AND txmap IS NOT NULL",
+            ("a", "b"),
+        )
+    )
+    assert "blocks_day" in plan
+    assert livedb.drop_old_txmaps(conn) == 0  # nothing new until another day passes
